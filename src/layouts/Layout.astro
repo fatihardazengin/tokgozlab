@@ -1,133 +1,149 @@
 ---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
-import { SITE } from '../config';
-import { ui, defaultLang } from '../i18n/ui';
+import { ArrowUpRight, Mail, MapPin } from 'lucide-react';
+import { LOCALE, SITE } from '../config';
 
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const { title, description = SITE.description } = Astro.props;
-const pageTitle = title ? `${title} | ${SITE.labName}` : `${SITE.labName} - ${SITE.university}`;
-
-// Define dynamic OG Image
-// If it's the homepage, use index.png. Otherwise, try to map the path to a slug.
-// For simplification, we'll just default to index.png for the home page, and generate specific ones for known routes.
-// However, to be robust, let's assume we have an og image for every page that maps to our static paths in og/[...slug].ts.
-// But standard pages like /research match /og/research.
-// What about nested pages like /research/cv? Our OG generator doesn't handle them yet (it only has static pages list).
-// So we will use a fallback.
+const pageTitle = title && title !== 'Home' ? `${title} · ${SITE.labName}` : `${SITE.labName} · ${SITE.university}`;
+const siteBase = Astro.site ?? new URL(Astro.url.origin);
+const canonicalUrl = new URL(Astro.url.pathname, siteBase);
 const currentPath = Astro.url.pathname.replace(/^\/|\/$/g, '');
-const ogSlug = currentPath === '' ? 'index' : currentPath;
-// Check if the current path is one of our supported OG pages (index, research, team, publications, news, join).
-// If not, fallback to index.
-const supportedOgPages = ['index', 'research', 'team', 'publications', 'news', 'join'];
-const finalOgSlug = supportedOgPages.includes(ogSlug) ? ogSlug : 'index';
-const ogImage = new URL(`/og/${finalOgSlug}.png`, Astro.url);
+const ogSlug = currentPath || 'index';
+const supportedTopLevel = ['index', 'research', 'projects', 'team', 'publications', 'news', 'join'];
+const topLevel = ogSlug.split('/')[0];
+const finalOgSlug = supportedTopLevel.includes(topLevel) ? ogSlug : 'index';
+const ogImage = new URL(`/og/${finalOgSlug}.png`, siteBase);
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ResearchOrganization',
+      '@id': `${siteBase.href}#lab`,
+      name: SITE.labName,
+      url: siteBase.href,
+      logo: new URL(SITE.logo, siteBase).href,
+      description: SITE.description,
+      parentOrganization: {
+        '@type': 'CollegeOrUniversity',
+        name: 'Sabancı University',
+        url: 'https://www.sabanciuniv.edu/',
+      },
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Orta Mahalle',
+        postalCode: '34956',
+        addressLocality: 'Tuzla',
+        addressRegion: 'İstanbul',
+        addressCountry: 'TR',
+      },
+      email: SITE.email,
+      founder: { '@id': `${siteBase.href}#principal-investigator` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteBase.href}#principal-investigator`,
+      name: SITE.profile.name,
+      jobTitle: SITE.profile.role,
+      affiliation: { '@id': `${siteBase.href}#lab` },
+      sameAs: [
+        SITE.profile.officialUrl,
+        SITE.profile.scholarUrl,
+        SITE.profile.orcidUrl,
+        SITE.profile.linkedinUrl,
+      ],
+    },
+  ],
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={LOCALE.lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self';" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#002776" />
     <meta name="generator" content={Astro.generator} />
-    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
     <title>{pageTitle}</title>
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={SITE.labName} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={pageTitle} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={ogImage} />
-
-    {
-      Astro.url.pathname === '/' && (
-        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Person",
-          "name": SITE.author,
-          "url": SITE.website,
-          "image": new URL(SITE.avatar || SITE.logo, SITE.website).href,
-          "jobTitle": "Principal Investigator",
-          "worksFor": {
-            "@type": "Organization",
-            "name": SITE.labName,
-            "url": SITE.website
-          },
-          "description": SITE.description
-        })} />
-      )
-    }
+    {Astro.url.pathname === '/' && <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />}
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen bg-white text-slate-800">
     <Header />
-    <main class="flex-grow" data-pagefind-body>
+    <main id="main-content" class="min-h-[60vh]" data-pagefind-body>
       <slot />
     </main>
-    
-    <footer class="border-t border-gray-100 py-8 mt-12 bg-gray-50">
-      <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
-        <p>
-          <a href="https://github.com/fjd2004711/scholar-lite" target="_blank" class="hover:text-gray-700 inline-flex items-center gap-1 transition-colors">
-            Built with Scholar-Lite Open Source Template
+
+    <footer class="relative overflow-hidden bg-[#061a2b] text-slate-300">
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#5de4df] to-transparent opacity-60"></div>
+      <div class="mx-auto grid max-w-[90rem] gap-12 px-4 py-14 sm:px-6 md:grid-cols-[1.3fr_0.7fr_1fr] lg:px-10 lg:py-18">
+        <div class="max-w-md">
+          <a href="/" class="inline-flex items-center gap-3 text-white">
+            <img src={SITE.logo} width="44" height="44" alt="" class="h-11 w-11" />
+            <span>
+              <span class="block text-lg font-bold">{SITE.labName}</span>
+              <span class="text-xs font-semibold uppercase tracking-[0.14em] text-[#7bdedb]">Integrated Circuits & Systems</span>
+            </span>
           </a>
-        </p>
+          <p class="mt-5 text-sm leading-7 text-slate-400">
+            Energy-efficient integrated circuits and intelligent hardware for future wireless communication and sensing.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-white">Explore</h2>
+          <nav class="mt-5 grid gap-3 text-sm" aria-label="Footer navigation">
+            {SITE.nav.filter((item) => item.key !== 'search').map((item) => (
+              <a href={item.link} class="w-fit transition-colors hover:text-[#7bdedb]">{item.text}</a>
+            ))}
+          </nav>
+        </div>
+
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-white">Contact</h2>
+          <div class="mt-5 space-y-4 text-sm">
+            <a href={`mailto:${SITE.email}`} class="flex items-start gap-3 transition-colors hover:text-[#7bdedb]">
+              <Mail className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>{SITE.email}</span>
+            </a>
+            <p class="flex items-start gap-3 leading-6 text-slate-400">
+              <MapPin className="mt-1 h-4 w-4 shrink-0" />
+              <span>Sabancı University FENS<br />Tuzla, İstanbul, Türkiye</span>
+            </p>
+            <a href={SITE.profile.officialUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 font-semibold text-white hover:text-[#7bdedb]">
+              Official university profile <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10">
+        <div class="mx-auto flex max-w-[90rem] flex-col gap-2 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-10">
+          <p>© {new Date().getFullYear()} {SITE.labName}. All rights reserved.</p>
+          <p>Sabancı University · Faculty of Engineering and Natural Sciences</p>
+        </div>
       </div>
     </footer>
-
-    <script is:inline define:vars={{ ui, defaultLang }}>
-      // Make ui available globally for debugging if needed, but main logic is here
-      const translations = ui;
-      const fallbackLang = defaultLang;
-
-      function getStoredLang() {
-        if (typeof localStorage !== 'undefined') {
-          return localStorage.getItem('preferred-lang') || fallbackLang;
-        }
-        return fallbackLang;
-      }
-
-      // Expose global setLanguage function
-      window.setLanguage = (lang) => {
-        localStorage.setItem('preferred-lang', lang);
-        document.documentElement.lang = lang;
-        
-        // Update all elements with data-i18n-key
-        const elements = document.querySelectorAll('[data-i18n-key]');
-        elements.forEach(el => {
-          const key = el.getAttribute('data-i18n-key');
-          if (key && translations[lang] && translations[lang][key]) {
-            // Check if it's an input/textarea with placeholder
-            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-              el.placeholder = translations[lang][key];
-            } else {
-              el.textContent = translations[lang][key];
-            }
-          }
-        });
-
-        // Dispatch event for other components (like Header)
-        window.dispatchEvent(new CustomEvent('language-change', { detail: { lang } }));
-      };
-
-      // Initialize
-      const currentLang = getStoredLang();
-      // Run immediately to avoid flash
-      window.setLanguage(currentLang);
-    </script>
   </body>
 </html>

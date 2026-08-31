@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title desc">
+  <title id="title">Tokgöz Lab</title>
+  <desc id="desc">A CMOS chip emitting three wireless signal arcs</desc>
   <rect width="48" height="48" rx="14" fill="#002776"/>
   <path d="M11 17h4M11 24h4M11 31h4M33 17h4M33 24h4M33 31h4M18 11v4M24 11v4M30 11v4M18 33v4M24 33v4M30 33v4" stroke="#5DE4DF" stroke-width="2" stroke-linecap="round"/>
   <rect x="15" y="15" width="18" height="18" rx="4" fill="#fff"/>

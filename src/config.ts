@@ -1,71 +1,83 @@
-import heroImage from './assets/hero-real.jpg';
+import heroImage from './assets/tokgoz-lab-hero.png';
 
 export const SITE = {
-  website: 'https://scholar-lite-demo.netlify.app/', // Replace with your actual deployed URL
-  author: 'Scholar-Lite Team',
-  description: 'A lightweight, modern static website template for academic labs and scholars.',
-  title: 'Scholar-Lite',
-  ogImage: 'astropaper-og.jpg',
-  lightAndDarkMode: true,
-  postPerPage: 3,
-  scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
-  
-  // Lab Info
-  labName: 'Scholar-Lite Lab',
-  university: 'University Name',
-  logo: '/assets/logo-real.svg', // Logo path
-  avatar: '/assets/logo-real.svg', // Avatar for SEO/Schema
-  email: 'contact@lab.edu', // Contact email for Join Us page
+  // Set Astro's `site` option when the lab's production domain is chosen.
+  website: '',
+  author: 'Korkut Kaan Tokgöz',
+  description:
+    'Tokgöz Lab at Sabancı University develops energy-efficient mmWave and sub-terahertz CMOS circuits, integrated systems, and intelligent hardware for future communications.',
+  title: 'Tokgöz Lab',
+  ogImage: '/og/index.png',
+  lightAndDarkMode: false,
+  postPerPage: 10,
+  scheduledPostMargin: 15 * 60 * 1000,
 
-  // Hero Section (Home Page) - Main content does not need to be translated for 8 languages by default
-  hero: {
-    title: 'Advancing Computer Vision & Deep Learning Research.',
-    subtitle: 'We are the Scholar-Lite Lab.',
-    action: 'View Publications', // Optional call to action text
-    image: heroImage, // Hero image path
+  labName: 'Tokgöz Lab',
+  university: 'Sabancı University · Electronics Engineering',
+  logo: '/assets/tokgoz-lab-mark.svg',
+  avatar: '/assets/tokgoz-lab-mark.svg',
+  email: 'korkut.tokgoz@sabanciuniv.edu',
+
+  profile: {
+    name: 'Korkut Kaan Tokgöz',
+    role: 'Faculty Member',
+    department: 'Electronics Engineering',
+    university: 'Sabancı University',
+    officialUrl: 'https://fens.sabanciuniv.edu/en/faculty-members/detail/3672',
+    personalUrl: 'https://korkutkaantokgoz.com/',
+    scholarUrl: 'https://scholar.google.com/citations?user=NTSfdkcAAAAJ',
+    orcidUrl: 'https://orcid.org/0000-0002-5724-6349',
+    linkedinUrl: 'https://tr.linkedin.com/in/korkut-kaan-tokgoz-92b07633',
   },
 
-  // Navigation
+  contact: {
+    phone: '+90 216 483 9290',
+    address:
+      'Faculty of Engineering and Natural Sciences, Sabancı University, Orta Mahalle, 34956 Tuzla, İstanbul, Türkiye',
+  },
+
+  hero: {
+    eyebrow: 'Integrated circuits for the next wireless frontier',
+    title: 'From silicon to sub-terahertz systems.',
+    subtitle:
+      'We design energy-efficient CMOS circuits and intelligent hardware for ultra-high-data-rate communications, sensing, and connected systems.',
+    action: 'Explore our research',
+    image: heroImage,
+  },
+
   nav: [
-    { text: 'Home', link: '/', key: 'home' },
     { text: 'Research', link: '/research', key: 'research' },
-    { text: 'Achievements', link: '/achievements', key: 'achievements' },
-    { text: 'Team', link: '/team', key: 'team' },
-    { text: 'Activities', link: '/activities', key: 'activities' },
-    { text: 'Join Us', link: '/join', key: 'join' },
+    { text: 'Projects', link: '/projects', key: 'projects' },
+    { text: 'Publications', link: '/publications', key: 'publications' },
+    { text: 'People', link: '/team', key: 'team' },
+    { text: 'Opportunities', link: '/join', key: 'join' },
     { text: 'Search', link: '/search', key: 'search' },
   ],
 
-  // Custom Pages (Appended after 'Join Us')
-  customPages: [
-    // Example: { text: 'Alumni', link: '/alumni', key: 'alumni' }
-  ],
-  
-  // i18n Config
+  customPages: [],
+
   i18n: {
-    enabled: true,
-    defaultLocale: 'zh',
-  }
+    enabled: false,
+    defaultLocale: 'en',
+  },
 };
 
 export const LOCALE = {
-  lang: 'en', // html lang code. Set this empty and default will be "en"
-  langTag: ['en-EN'], // BCP 47 Language Tags. Set this empty [] to use the environment default
+  lang: 'en',
+  langTag: ['en-US'],
 } as const;
 
 export const LOGO_IMAGE = {
   enable: true,
   svg: true,
-  width: 216,
-  height: 46,
+  width: 44,
+  height: 44,
 };
 
 export const SOCIALS = [
-  {
-    link: 'https://github.com/fjd2004711/scholar-lite',
-    active: true,
-  },
+  { link: SITE.profile.scholarUrl, label: 'Google Scholar', active: true },
+  { link: SITE.profile.orcidUrl, label: 'ORCID', active: true },
+  { link: SITE.profile.linkedinUrl, label: 'LinkedIn', active: true },
 ];
 
-// Default language configuration
-export const DEFAULT_LANG: 'zh' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru' = 'en'; 
+export const DEFAULT_LANG = 'en';

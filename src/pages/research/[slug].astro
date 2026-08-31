@@ -1,11 +1,12 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
   const researchAreas = await getCollection('research');
-  return researchAreas.map(area => ({
-    params: { slug: area.id.replace(/\.[^/.]+$/, "") },
+  return researchAreas.map((area) => ({
+    params: { slug: area.id.replace(/\.[^/.]+$/, '') },
     props: { area },
   }));
 }
@@ -14,24 +15,32 @@ const { area } = Astro.props;
 const { Content } = await render(area);
 ---
 
-<Layout title={area.data.title}>
-  <article class="max-w-4xl mx-auto px-4 py-12 sm:py-20">
-    <a href="/research" class="inline-flex items-center text-sm text-gray-500 hover:text-blue-600 mb-8 transition-colors">
-      &larr; Back to Research
-    </a>
-
-    <header class="mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-6">{area.data.title}</h1>
-      {area.data.cover && (
-        <div class="w-full h-64 sm:h-96 rounded-2xl overflow-hidden bg-gray-100 mb-8">
-          <img src={area.data.cover.src} alt={area.data.title} class="w-full h-full object-cover" />
-        </div>
-      )}
-      <p class="text-xl text-gray-600 leading-relaxed">{area.data.description}</p>
+<Layout title={area.data.title} description={area.data.description}>
+  <article>
+    <header class="relative overflow-hidden bg-[#061a2b] text-white">
+      <div class="signal-grid absolute inset-0 opacity-60"></div>
+      <div class="absolute -right-28 -top-32 h-[30rem] w-[30rem] rounded-full border border-[#5de4df]/15"></div>
+      <div class="absolute -right-12 -top-14 h-[20rem] w-[20rem] rounded-full border border-[#5de4df]/20"></div>
+      <div class="section-shell relative py-16 sm:py-24">
+        <a href="/research" class="inline-flex items-center gap-2 text-sm font-bold text-[#7bdedb] transition hover:text-white">
+          <ArrowLeft className="h-4 w-4" /> All research areas
+        </a>
+        <h1 class="mt-10 max-w-4xl text-4xl font-bold leading-tight tracking-[-0.045em] sm:text-6xl">{area.data.title}</h1>
+        <p class="mt-7 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">{area.data.description}</p>
+      </div>
     </header>
 
-    <div class="prose prose-lg prose-blue max-w-none text-gray-700">
-      <Content />
+    <div class="section-shell grid gap-12 py-16 sm:py-24 lg:grid-cols-[1fr_18rem] lg:gap-20">
+      <div class="prose max-w-3xl">
+        <Content />
+      </div>
+      <aside class="h-fit rounded-2xl border border-slate-200 bg-[#f5f8fa] p-6 lg:sticky lg:top-28">
+        <p class="text-xs font-bold uppercase tracking-[0.15em] text-[#007f80]">Research with us</p>
+        <p class="mt-4 text-sm leading-6 text-slate-600">Interested in this direction? Prospective students and collaborators are welcome to get in touch.</p>
+        <a href="/join" class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#002776]">
+          Opportunities <ArrowUpRight className="h-4 w-4" />
+        </a>
+      </aside>
     </div>
   </article>
 </Layout>

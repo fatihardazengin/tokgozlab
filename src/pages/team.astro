@@ -1,127 +1,65 @@
 ---
+import { getCollection } from 'astro:content';
+import { ArrowUpRight, Users } from 'lucide-react';
 import Layout from '../layouts/Layout.astro';
 import TeamCard from '../components/TeamCard.astro';
-import { getCollection } from 'astro:content';
 
-const allMembers = await getCollection('team');
-
-// Define groups based on domestic hierarchy + international standard
+const allMembers = (await getCollection('team')).sort((a, b) => a.data.weight - b.data.weight);
 const groups = [
-  {
-    id: 'pi',
-    titleKey: 'team.pi',
-    roles: ['Principal Investigator']
-  },
-  {
-    id: 'faculty',
-    titleKey: 'team.faculty',
-    roles: ['Professor', 'Associate Professor', 'Assistant Professor']
-  },
-  {
-    id: 'postdoc',
-    titleKey: 'team.youth_researcher',
-    roles: ['Postdoc']
-  },
-  {
-    id: 'staff',
-    titleKey: 'team.support',
-    roles: ['Research Assistant']
-  },
-  {
-    id: 'phd',
-    titleKey: 'team.phd',
-    roles: ['PhD Student']
-  },
-  {
-    id: 'master',
-    titleKey: 'team.master',
-    roles: ['Master Student']
-  },
-  {
-    id: 'undergrad',
-    titleKey: 'team.undergrad',
-    roles: ['Undergraduate']
-  },
-  {
-    id: 'alumni',
-    titleKey: 'team.alumni',
-    roles: ['Alumni']
-  }
-];
-
-const getRolePriority = (role: string) => {
-  const priorities: Record<string, number> = {
-    'Principal Investigator': 0,
-    'Professor': 1,
-    'Associate Professor': 2,
-    'Assistant Professor': 3,
-    'Postdoc': 4,
-    'Research Assistant': 5,
-    'PhD Student': 6,
-    'Master Student': 7,
-    'Undergraduate': 8,
-    'Alumni': 9
-  };
-  return priorities[role] ?? 99;
-};
-
-// Group members
-const groupedMembers = groups.reduce((acc, group) => {
-  const members = allMembers
-    .filter(m => group.roles.includes(m.data.role))
-    .sort((a, b) => {
-      // Sort by Role Priority first (e.g. Prof before Assoc Prof)
-      const roleDiff = getRolePriority(a.data.role) - getRolePriority(b.data.role);
-      if (roleDiff !== 0) return roleDiff;
-      // Then by weight
-      return (a.data.weight || 100) - (b.data.weight || 100);
-    });
-  
-  if (members.length > 0) {
-    acc.push({
-      ...group,
-      members
-    });
-  }
-  return acc;
-}, [] as Array<{ id: string, titleKey: string, roles: string[], members: typeof allMembers }>);
-
+  { title: 'Principal Investigator', roles: ['Principal Investigator'] },
+  { title: 'Researchers', roles: ['Professor', 'Associate Professor', 'Assistant Professor', 'Postdoc', 'Research Assistant'] },
+  { title: 'Graduate Students', roles: ['PhD Student', 'Master Student'] },
+  { title: 'Undergraduate Researchers', roles: ['Undergraduate'] },
+  { title: 'Alumni', roles: ['Alumni'] },
+]
+  .map((group) => ({ ...group, members: allMembers.filter((member) => group.roles.includes(member.data.role)) }))
+  .filter((group) => group.members.length > 0);
 ---
 
-<Layout title="Team">
-  <div class="max-w-7xl mx-auto px-4 py-12 sm:py-20">
-    <div class="max-w-3xl mx-auto text-center mb-16">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4" data-i18n-key="team.title">Our Team</h1>
-      <p class="text-lg text-gray-600" data-i18n-key="team.subtitle">
-        Meet the researchers and students behind our innovations.
-      </p>
+<Layout title="People" description="The researchers and students of Tokgöz Lab at Sabancı University.">
+  <header class="page-intro">
+    <div class="section-shell relative z-10 py-16 sm:py-24">
+      <span class="eyebrow">People</span>
+      <div class="mt-5 grid gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-end">
+        <h1 class="max-w-4xl text-5xl font-bold leading-[1.02] tracking-[-0.055em] text-[#071b26] sm:text-6xl">The people behind the circuits.</h1>
+        <p class="text-lg leading-8 text-slate-600">A research group connecting integrated-circuit design, high-frequency measurement, communication systems, and intelligent edge hardware.</p>
+      </div>
     </div>
+  </header>
 
-    <div class="space-y-20">
-      {groupedMembers.map(group => (
+  <section class="py-16 sm:py-24">
+    <div class="section-shell space-y-20">
+      {groups.map((group) => (
         <section>
-          <h2 class="text-2xl font-bold text-gray-900 mb-8 pl-4 border-l-4 border-blue-600" data-i18n-key={group.titleKey}>
-            {/* Fallback text if JS doesn't replace it immediately, though i18n script should handle it */}
-            {group.id === 'pi' ? 'Principal Investigator' :
-             group.id === 'faculty' ? 'Faculty' :
-             group.id === 'postdoc' ? 'Postdoctoral Researchers' :
-             group.id === 'staff' ? 'Research Support' :
-             group.id === 'phd' ? 'PhD Students' :
-             group.id === 'master' ? 'Master Students' :
-             group.id === 'undergrad' ? 'Undergraduate Students' :
-             group.id === 'alumni' ? 'Alumni' : ''}
-          </h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-            {group.members.map(member => (
-              <TeamCard member={member} />
-            ))}
+          <div class="mb-8 flex items-center gap-3">
+            <span class="h-8 w-1 rounded-full bg-[#00a6a6]"></span>
+            <h2 class="text-2xl font-bold tracking-[-0.025em] text-[#071b26]">{group.title}</h2>
+          </div>
+          <div class="grid max-w-5xl gap-7 sm:grid-cols-2 lg:grid-cols-3">
+            {group.members.map((member) => <TeamCard member={member} />)}
           </div>
         </section>
       ))}
 
       {allMembers.length === 0 && (
-        <p class="text-gray-500 text-center py-12" data-i18n-key="team.noMembers">No team members found. Add markdown files to src/content/team/</p>
+        <div class="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-12 text-center">
+          <Users className="mx-auto h-8 w-8 text-slate-400" />
+          <p class="mt-4 text-slate-600">Team profiles are being prepared.</p>
+        </div>
       )}
     </div>
-  </div>
+  </section>
+
+  <section class="pb-20 sm:pb-28">
+    <div class="section-shell rounded-3xl bg-[#061a2b] px-7 py-10 text-white sm:px-12 sm:py-12 lg:flex lg:items-center lg:justify-between lg:gap-10">
+      <div class="max-w-2xl">
+        <p class="text-xs font-bold uppercase tracking-[0.15em] text-[#7bdedb]">Future lab members</p>
+        <h2 class="mt-3 text-3xl font-bold tracking-[-0.035em]">Interested in joining the team?</h2>
+        <p class="mt-4 leading-7 text-slate-300">Explore research paths for PhD, master’s, and undergraduate students.</p>
+      </div>
+      <a href="/join" class="mt-7 inline-flex shrink-0 items-center gap-2 rounded-full bg-[#ffb547] px-6 py-3 text-sm font-bold text-[#071b26] lg:mt-0">
+        View opportunities <ArrowUpRight className="h-4 w-4" />
+      </a>
+    </div>
+  </section>
 </Layout>

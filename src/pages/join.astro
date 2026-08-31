@@ -1,76 +1,105 @@
 ---
+import { ArrowUpRight, BookOpen, Check, Cpu, GraduationCap, Mail, Radio, Users } from 'lucide-react';
 import Layout from '../layouts/Layout.astro';
-import { Mail, GraduationCap, BookOpen, Code } from 'lucide-react';
 import { SITE } from '../config';
+
+const paths = [
+  {
+    icon: GraduationCap,
+    label: 'PhD research',
+    description: 'Deep, multi-year research on integrated circuits, high-frequency hardware, and future communication systems.',
+    points: ['Strong EE fundamentals', 'Research-oriented mindset', 'Clear technical writing'],
+  },
+  {
+    icon: Radio,
+    label: 'Master’s research',
+    description: 'Thesis-driven work combining circuit or system design with simulation, implementation, and measurement.',
+    points: ['Analog/RF or digital systems', 'Hands-on experimentation', 'Independent problem solving'],
+  },
+  {
+    icon: Cpu,
+    label: 'Undergraduate research',
+    description: 'Focused projects through undergraduate research, graduation projects, and lab-based technical development.',
+    points: ['Curiosity and consistency', 'Willingness to learn tools', 'Commitment to a project'],
+  },
+];
 ---
 
-<Layout title="Join Us">
-  <div class="max-w-4xl mx-auto px-4 py-12 sm:py-20">
-    <div class="text-center mb-16">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4" data-i18n-key="join.title">Join Us</h1>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-i18n-key="join.subtitle">
-        We are always looking for motivated students to join our team. If you are interested in our research areas, please contact us!
-      </p>
-    </div>
-
-    <div class="grid gap-8 md:grid-cols-3 mb-16">
-      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4 text-blue-600">
-          <GraduationCap className="w-6 h-6" />
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-2">PhD Students</h3>
-        <p class="text-gray-600 text-sm mb-4">
-          We are looking for PhD students with strong mathematical background and coding skills.
-        </p>
-        <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside">
-          <li>Strong math foundation</li>
-          <li>Proficient in Python/C++</li>
-          <li>Publication record is a plus</li>
-        </ul>
-      </div>
-
-      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center mb-4 text-green-600">
-          <BookOpen className="w-6 h-6" />
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-2">Master Students</h3>
-        <p class="text-gray-600 text-sm mb-4">
-          Self-motivated master students who want to dive deep into research are welcome.
-        </p>
-        <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside">
-          <li>Passion for research</li>
-          <li>Good programming skills</li>
-          <li>Commitment to projects</li>
-        </ul>
-      </div>
-
-      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4 text-purple-600">
-          <Code className="w-6 h-6" />
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-2">Undergraduates</h3>
-        <p class="text-gray-600 text-sm mb-4">
-          Talented undergraduates can join us for research training and internship.
-        </p>
-        <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside">
-          <li>Curiosity driven</li>
-          <li>Fast learner</li>
-          <li>Team player</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="bg-gray-50 rounded-3xl p-8 sm:p-12 text-center">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4" data-i18n-key="join.howToApply">How to Apply</h2>
-      <p class="text-gray-600 mb-8 max-w-2xl mx-auto" data-i18n-key="join.applicationText">
-        Please send your CV, transcripts, and a brief statement of research interests to our Principal Investigator. 
-        Make sure to include "[Application]" in your email subject.
-      </p>
-      
-      <a href={`mailto:${SITE.email}`} class="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-full font-medium hover:bg-blue-700 transition-colors">
-        <Mail className="w-5 h-5" />
-        <span data-i18n-key="join.sendEmail">Send Email</span>
+<Layout title="Opportunities" description="Research opportunities for prospective PhD, master's, and undergraduate students at Tokgöz Lab, Sabancı University.">
+  <header class="relative overflow-hidden bg-[#061a2b] text-white">
+    <div class="signal-grid absolute inset-0 opacity-55"></div>
+    <div class="absolute -right-32 -top-36 h-[34rem] w-[34rem] rounded-full border border-[#5de4df]/15"></div>
+    <div class="section-shell relative py-18 sm:py-28">
+      <p class="text-xs font-bold uppercase tracking-[0.17em] text-[#7bdedb]">Opportunities</p>
+      <h1 class="mt-5 max-w-4xl text-5xl font-bold leading-[1.02] tracking-[-0.055em] sm:text-7xl">Do ambitious hardware research with us.</h1>
+      <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300">We welcome thoughtful inquiries from students who want to work across circuits, measurement, communication systems, sensing, and intelligent hardware.</p>
+      <a href={`mailto:${SITE.email}?subject=Prospective%20researcher%20%E2%80%94%20Tokg%C3%B6z%20Lab`} class="mt-9 inline-flex items-center gap-2 rounded-full bg-[#ffb547] px-6 py-3.5 text-sm font-bold text-[#071b26] transition hover:bg-[#ffc66e]">
+        <Mail className="h-4 w-4" /> Introduce yourself
       </a>
     </div>
-  </div>
+  </header>
+
+  <section class="py-16 sm:py-24">
+    <div class="section-shell">
+      <div class="max-w-3xl">
+        <span class="eyebrow">Ways to contribute</span>
+        <h2 class="mt-5 text-4xl font-bold tracking-[-0.04em] text-[#071b26]">Find the research path that fits your stage.</h2>
+        <p class="mt-4 leading-7 text-slate-600">Openings and funded positions vary by semester. These paths describe the kinds of research participation the lab supports.</p>
+      </div>
+
+      <div class="mt-12 grid gap-6 lg:grid-cols-3">
+        {paths.map((path) => (
+          <article class="card-lift rounded-3xl border border-slate-200 bg-white p-7">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#e7f7f6] text-[#007f80]"><path.icon className="h-6 w-6" /></div>
+            <h3 class="mt-6 text-xl font-bold text-[#071b26]">{path.label}</h3>
+            <p class="mt-3 min-h-24 text-sm leading-6 text-slate-600">{path.description}</p>
+            <ul class="mt-5 space-y-3 border-t border-slate-100 pt-5 text-sm text-slate-600">
+              {path.points.map((point) => <li class="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[#00a6a6]" /> {point}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f7fa] py-16 sm:py-24">
+    <div class="section-shell grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+      <div>
+        <span class="eyebrow">Before you write</span>
+        <h2 class="mt-5 text-4xl font-bold tracking-[-0.04em] text-[#071b26]">Make your first message useful.</h2>
+        <p class="mt-5 leading-7 text-slate-600">A concise, specific introduction helps us understand where your interests overlap with the lab’s current work.</p>
+      </div>
+
+      <div class="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
+        <ol class="space-y-7">
+          {[
+            ['Tell us your context', 'Your current program, institution, expected graduation date, and the research path you are considering.'],
+            ['Name the overlap', 'Mention one or two Tokgöz Lab research directions that genuinely interest you and why.'],
+            ['Attach the essentials', 'Include a CV and transcript; add a portfolio, paper, or project link only when relevant.'],
+            ['Keep it specific', 'Describe technical experience with circuits, RF, embedded systems, FPGA, modeling, or measurement.'],
+          ].map(([title, text], index) => (
+            <li class="grid grid-cols-[2.5rem_1fr] gap-4">
+              <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#002776] font-mono text-sm font-bold text-white">{index + 1}</span>
+              <div><h3 class="font-bold text-[#071b26]">{title}</h3><p class="mt-1 text-sm leading-6 text-slate-600">{text}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="section-shell grid gap-5 md:grid-cols-2">
+      <a href="https://fens.sabanciuniv.edu/en/graduate-programs" target="_blank" rel="noopener noreferrer" class="card-lift flex items-center gap-5 rounded-2xl border border-slate-200 p-6">
+        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#002776]"><BookOpen className="h-6 w-6" /></span>
+        <span class="flex-grow"><span class="block font-bold text-[#071b26]">Graduate programs</span><span class="mt-1 block text-sm text-slate-500">Requirements, programs, and university information</span></span>
+        <ArrowUpRight className="h-5 w-5 text-slate-400" />
+      </a>
+      <a href="https://www.sabanciuniv.edu/en/faculty-engineering-and-natural-sciences-fens-phd-projects" target="_blank" rel="noopener noreferrer" class="card-lift flex items-center gap-5 rounded-2xl border border-slate-200 p-6">
+        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><Users className="h-6 w-6" /></span>
+        <span class="flex-grow"><span class="block font-bold text-[#071b26]">Current PhD project listings</span><span class="mt-1 block text-sm text-slate-500">Check university-posted topics and availability</span></span>
+        <ArrowUpRight className="h-5 w-5 text-slate-400" />
+      </a>
+    </div>
+  </section>
 </Layout>

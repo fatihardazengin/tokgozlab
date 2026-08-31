@@ -1,38 +1,69 @@
 ---
+import { getCollection } from 'astro:content';
+import { ArrowUpRight, BookOpen, GraduationCap } from 'lucide-react';
 import Layout from '../layouts/Layout.astro';
 import PublicationItem from '../components/PublicationItem.astro';
-import { getCollection } from 'astro:content';
+import { SITE } from '../config';
 
-const allPapers = (await getCollection('publications')).sort((a, b) => b.data.year - a.data.year);
-const years = [...new Set(allPapers.map(p => p.data.year))];
+const allPapers = (await getCollection('publications'))
+  .filter((paper) => paper.data.type === 'paper')
+  .sort((a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title));
+const years = [...new Set(allPapers.map((paper) => paper.data.year))];
 ---
 
-<Layout title="Publications">
-  <div class="max-w-4xl mx-auto px-4 py-12 sm:py-20">
-    <div class="mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Publications</h1>
-      <p class="text-lg text-gray-600">
-        A collection of our research papers, conference proceedings, and journal articles.
-      </p>
-    </div>
-
-    <div class="space-y-12">
-      {years.map(year => (
-        <div class="relative">
-          <div class="sticky top-20 z-10 bg-white/90 backdrop-blur py-2 mb-4 border-b border-gray-100">
-            <h2 class="text-2xl font-bold text-gray-900">{year}</h2>
-          </div>
-          <div class="space-y-2">
-            {allPapers.filter(p => p.data.year === year).map(paper => (
-              <PublicationItem entry={paper} />
-            ))}
+<Layout title="Publications" description="Selected journal and conference publications from Tokgöz Lab in mmWave, sub-terahertz CMOS, wireless systems, Edge AI, and semiconductor modeling.">
+  <header class="page-intro">
+    <div class="section-shell relative z-10 py-16 sm:py-24">
+      <span class="eyebrow">Publications</span>
+      <div class="mt-5 grid gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-end">
+        <h1 class="max-w-4xl text-5xl font-bold leading-[1.02] tracking-[-0.055em] text-[#071b26] sm:text-6xl">Ideas tested in silicon and systems.</h1>
+        <div>
+          <p class="text-lg leading-8 text-slate-600">A selected bibliography across integrated circuits, high-frequency communications, sensing, and intelligent hardware.</p>
+          <div class="mt-5 flex flex-wrap gap-4">
+            <a href={SITE.profile.scholarUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-bold text-[#007f80]">
+              <GraduationCap className="h-4 w-4" /> Google Scholar <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+            <a href={SITE.profile.officialUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-bold text-[#007f80]">
+              Official publication list <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
           </div>
         </div>
-      ))}
-      
-      {allPapers.length === 0 && (
-        <p class="text-gray-500 text-center py-12">No publications found. Add markdown files to src/content/publications/</p>
-      )}
+      </div>
     </div>
-  </div>
+  </header>
+
+  <section class="py-16 sm:py-24">
+    <div class="section-shell grid gap-10 lg:grid-cols-[11rem_1fr] lg:gap-14">
+      <aside class="h-fit lg:sticky lg:top-28">
+        <div class="flex items-center gap-2 text-sm font-bold text-[#071b26]">
+          <BookOpen className="h-4 w-4 text-[#007f80]" /> Browse by year
+        </div>
+        <nav class="mt-5 flex flex-wrap gap-2 lg:flex-col" aria-label="Publication years">
+          {years.map((year) => (
+            <a href={`#year-${year}`} class="w-fit rounded-full border border-slate-200 px-3 py-1.5 font-mono text-xs font-bold text-slate-600 transition hover:border-[#00a6a6] hover:bg-[#e7f7f6] hover:text-[#006f72]">{year}</a>
+          ))}
+        </nav>
+      </aside>
+
+      <div class="space-y-16">
+        {years.map((year) => (
+          <section id={`year-${year}`} class="scroll-mt-28">
+            <div class="mb-6 flex items-end gap-4 border-b border-slate-200 pb-4">
+              <h2 class="font-mono text-3xl font-bold text-[#002776]">{year}</h2>
+              <span class="mb-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-400">
+                {allPapers.filter((paper) => paper.data.year === year).length} {allPapers.filter((paper) => paper.data.year === year).length === 1 ? 'publication' : 'publications'}
+              </span>
+            </div>
+            <div class="space-y-4">
+              {allPapers.filter((paper) => paper.data.year === year).map((paper) => <PublicationItem entry={paper} />)}
+            </div>
+          </section>
+        ))}
+
+        {allPapers.length === 0 && (
+          <div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center text-slate-500">Publication records are being prepared.</div>
+        )}
+      </div>
+    </div>
+  </section>
 </Layout>

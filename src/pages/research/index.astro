@@ -1,55 +1,67 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, BrainCircuit, Cpu, Gauge, Radio, Waves } from 'lucide-react';
+import Layout from '../../layouts/Layout.astro';
 
 const researchAreas = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
+const icons = [Waves, Radio, Cpu, BrainCircuit];
+const numbers = ['01', '02', '03', '04'];
 ---
 
-<Layout title="Research">
-  <div class="max-w-7xl mx-auto px-4 py-12 sm:py-20">
-    <div class="max-w-3xl mx-auto text-center mb-16">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4" data-i18n-key="nav.research">Research Areas</h1>
-      <p class="text-lg text-gray-600" data-i18n-key="research.subtitle">
-        Our lab explores the frontiers of artificial intelligence, with a focus on computer vision and machine learning.
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {researchAreas.map(area => (
-        <div class="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
-          {area.data.cover && (
-            <div class="h-48 overflow-hidden bg-gray-100">
-              <img 
-                src={area.data.cover.src} 
-                alt={area.data.title} 
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-          )}
-          
-          <div class="p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-              {area.data.title}
-            </h2>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-              {area.data.description}
-            </p>
-            <a 
-              href={`/research/${area.id.replace(/\.[^/.]+$/, "")}`} 
-              class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700"
-            >
-              <span data-i18n-key="research.learnMore">Learn more</span> <ArrowRight className="ml-1 w-4 h-4" />
-            </a>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    {researchAreas.length === 0 && (
-      <div class="text-center py-20">
-        <p class="text-gray-500" data-i18n-key="research.noAreas">No research areas defined. Add markdown files to src/content/research/</p>
+<Layout title="Research" description="Tokgöz Lab research in mmWave and sub-terahertz CMOS circuits, 6G wireless systems, Edge AI, IoT, and AI-assisted semiconductor modeling.">
+  <header class="page-intro">
+    <div class="section-shell relative z-10 py-16 sm:py-24">
+      <span class="eyebrow">Research</span>
+      <div class="mt-5 grid gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-end">
+        <h1 class="max-w-4xl text-5xl font-bold leading-[1.02] tracking-[-0.055em] text-[#071b26] sm:text-6xl">
+          We work across the full hardware stack.
+        </h1>
+        <p class="max-w-2xl text-lg leading-8 text-slate-600">
+          From accurate device models to complete wireless links, our research joins circuit design, measurement, algorithms, and system-level thinking.
+        </p>
       </div>
-    )}
-  </div>
+    </div>
+  </header>
+
+  <section class="py-16 sm:py-24">
+    <div class="section-shell space-y-6">
+      {researchAreas.map((area, index) => {
+        const Icon = icons[index % icons.length];
+        return (
+          <article class="card-lift group grid overflow-hidden rounded-3xl border border-slate-200 bg-white md:grid-cols-[15rem_1fr_auto] md:items-center">
+            <div class="relative flex min-h-48 items-center justify-center overflow-hidden bg-[#061a2b] p-8 text-white md:min-h-full">
+              <div class="signal-grid absolute inset-0 opacity-60"></div>
+              <span class="absolute left-6 top-5 font-mono text-sm font-bold text-[#75e3de]">{numbers[index] ?? String(index + 1).padStart(2, '0')}</span>
+              <Icon className="relative h-16 w-16 text-[#ffb547]" strokeWidth={1.4} />
+              <div class="absolute -bottom-20 -right-16 h-44 w-44 rounded-full border border-[#5de4df]/20"></div>
+              <div class="absolute -bottom-12 -right-10 h-32 w-32 rounded-full border border-[#5de4df]/30"></div>
+            </div>
+            <div class="p-7 sm:p-9">
+              <h2 class="text-2xl font-bold tracking-[-0.025em] text-[#071b26] transition group-hover:text-[#006f72]">{area.data.title}</h2>
+              <p class="mt-4 max-w-3xl leading-7 text-slate-600">{area.data.description}</p>
+            </div>
+            <div class="px-7 pb-8 md:p-8">
+              <a href={`/research/${area.id.replace(/\.[^/.]+$/, '')}`} class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 text-[#002776] transition group-hover:border-[#00a6a6] group-hover:bg-[#e7f7f6]" aria-label={`Read about ${area.data.title}`}>
+                <ArrowRight className="h-5 w-5" />
+              </a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-[#f3f7fa] py-16 sm:py-20">
+    <div class="section-shell grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+      <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-[#002776] text-[#75e3de]">
+        <Gauge className="h-9 w-9" />
+      </div>
+      <div>
+        <h2 class="text-3xl font-bold tracking-[-0.035em] text-[#071b26]">A measurement-driven approach.</h2>
+        <p class="mt-4 max-w-3xl leading-7 text-slate-600">
+          Our questions begin with physical limits and end with experimentally grounded systems. Characterization, calibration, and de-embedding are not afterthoughts—they shape the architecture from day one.
+        </p>
+      </div>
+    </div>
+  </section>
 </Layout>

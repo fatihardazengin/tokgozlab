@@ -9,17 +9,15 @@ export async function getStaticPaths() {
   const publications = await getCollection('publications');
   const team = await getCollection('team');
   const research = await getCollection('research');
-  const news = await getCollection('news');
-  const activities = await getCollection('activities');
   
   // Define static pages
   const pages = [
     { slug: 'index', title: SITE.labName, subtitle: SITE.description },
-    { slug: 'research', title: 'Research', subtitle: 'Our Research Areas' },
-    { slug: 'team', title: 'Team', subtitle: 'Meet Our Lab Members' },
-    { slug: 'publications', title: 'Publications', subtitle: 'Selected Publications' },
-    { slug: 'news', title: 'News', subtitle: 'Latest Updates' },
-    { slug: 'join', title: 'Join Us', subtitle: 'Open Positions' },
+    { slug: 'research', title: 'Research', subtitle: 'Across the hardware stack' },
+    { slug: 'projects', title: 'Projects', subtitle: 'Research programs in motion' },
+    { slug: 'team', title: 'People', subtitle: 'The people behind the circuits' },
+    { slug: 'publications', title: 'Publications', subtitle: 'Ideas tested in silicon and systems' },
+    { slug: 'join', title: 'Opportunities', subtitle: 'Do ambitious hardware research with us' },
   ];
 
   // Generate paths for static pages
@@ -62,29 +60,11 @@ export async function getStaticPaths() {
     };
   });
 
-  const newsPaths = news.map(item => ({
-    params: { slug: `news/${item.id.replace(/\.[^/.]+$/, "")}` },
-    props: { 
-      title: item.data.title, 
-      subtitle: new Date(item.data.date).toLocaleDateString() 
-    },
-  }));
-
-  const activityPaths = activities.map(item => ({
-    params: { slug: `activities/${item.id.replace(/\.[^/.]+$/, "")}` },
-    props: { 
-      title: item.data.title, 
-      subtitle: new Date(item.data.date).toLocaleDateString() 
-    },
-  }));
-
   return [
     ...staticPaths, 
     ...pubPaths, 
     ...teamPaths, 
-    ...researchPaths, 
-    ...newsPaths,
-    ...activityPaths
+    ...researchPaths
   ];
 }
 
@@ -103,6 +83,7 @@ export async function GET({ params, props }: { params: any; props: any }) {
   const icons: Record<string, string> = {
     index: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6", // Home
     research: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z", // Flask
+    projects: "M9 17v-2m3 2v-4m3 4v-6m4 10H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2z",
     team: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z", // Users
     publications: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", // Book
     news: "M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z", // Newspaper
@@ -123,8 +104,8 @@ export async function GET({ params, props }: { params: any; props: any }) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#f8fafc',
-          backgroundImage: 'radial-gradient(#e2e8f0 1px, transparent 1px)',
+          backgroundColor: '#061a2b',
+          backgroundImage: 'radial-gradient(rgba(93,228,223,0.15) 1px, transparent 1px)',
           backgroundSize: '30px 30px',
         },
         children: [
@@ -139,7 +120,7 @@ export async function GET({ params, props }: { params: any; props: any }) {
                 backgroundColor: 'white',
                 padding: '60px 100px',
                 borderRadius: '30px',
-                border: '1px solid #e2e8f0',
+                border: '1px solid rgba(93,228,223,0.35)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
                 position: 'relative',
                 overflow: 'hidden',
@@ -155,7 +136,7 @@ export async function GET({ params, props }: { params: any; props: any }) {
                       left: 0,
                       right: 0,
                       height: '8px',
-                      background: 'linear-gradient(90deg, #3182ce 0%, #63b3ed 100%)',
+                      background: 'linear-gradient(90deg, #002776 0%, #00a6a6 65%, #ffb547 100%)',
                     },
                   },
                 },
@@ -170,8 +151,8 @@ export async function GET({ params, props }: { params: any; props: any }) {
                       width: '80px',
                       height: '80px',
                       borderRadius: '20px',
-                      backgroundColor: '#ebf8ff',
-                      color: '#3182ce',
+                      backgroundColor: '#e7f7f6',
+                      color: '#002776',
                       marginBottom: '30px',
                     },
                     children: [
@@ -206,7 +187,7 @@ export async function GET({ params, props }: { params: any; props: any }) {
                     style: {
                       fontSize: '64px',
                       fontWeight: 700,
-                      color: '#1a202c',
+                      color: '#071b26',
                       marginBottom: '16px',
                       textAlign: 'center',
                       letterSpacing: '-0.02em',
@@ -249,7 +230,7 @@ export async function GET({ params, props }: { params: any; props: any }) {
                             width: '12px',
                             height: '12px',
                             borderRadius: '50%',
-                            backgroundColor: '#3182ce',
+                            backgroundColor: '#00a6a6',
                             marginRight: '12px',
                           },
                         },

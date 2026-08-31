@@ -1,26 +1,27 @@
 {
-  "name": "scholar-lite",
+  "name": "tokgoz-lab",
   "type": "module",
   "version": "1.0.0",
-  "description": "A lightweight, modern static website template for academic labs and scholars, featuring zero-config BibTeX import and multilingual support.",
+  "description": "Research group website for Tokgöz Lab at Sabancı University.",
   "license": "MIT",
-  "author": "Scholar-Lite Team",
-  "homepage": "https://github.com/fjd2004711/scholar-lite",
+  "author": "Tokgöz Lab",
+  "homepage": "https://github.com/fatihardazengin/tokgozlab",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fjd2004711/scholar-lite.git"
+    "url": "https://github.com/fatihardazengin/tokgozlab.git"
   },
   "bugs": {
-    "url": "https://github.com/fjd2004711/scholar-lite/issues"
+    "url": "https://github.com/fatihardazengin/tokgozlab/issues"
   },
   "keywords": [
     "academic",
-    "scholar",
-    "website-template",
+    "integrated-circuits",
+    "mmwave",
+    "sub-terahertz",
     "astro",
     "bibtex",
     "research-lab",
-    "publication-list",
+    "sabanci-university",
     "tailwindcss"
   ],
   "engines": {

@@ -1,12 +1,8 @@
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import bibtexParse from 'bibtex-parse-js';
 import slugify from 'slugify';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const BIB_FILE = path.join(process.cwd(), 'citations.bib');
 const PUBLICATIONS_DIR = path.join(process.cwd(), 'src', 'content', 'publications');
@@ -90,7 +86,7 @@ function importBibtex() {
     // Extract additional fields
     // Cover image: check 'cover', 'image', 'figure'
     let cover = cleanString(tags.cover || tags.image || tags.figure || '');
-    const DEFAULT_COVER = '../../assets/paper-vision.jpg';
+    const DEFAULT_COVER = '../../assets/tokgoz-lab-hero.png';
 
     // Validate cover image existence
     if (cover) {

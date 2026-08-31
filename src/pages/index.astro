@@ -1,170 +1,256 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
-import { ArrowRight, Calendar } from 'lucide-react';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BrainCircuit,
+  Cpu,
+  GraduationCap,
+  Radio,
+  Sparkles,
+  Waves,
+} from 'lucide-react';
+import Layout from '../layouts/Layout.astro';
 import { SITE } from '../config';
+import profileImage from '../assets/korkut-kaan-tokgoz.jpg';
 
+const researchAreas = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
 const papers = (await getCollection('publications'))
-  .filter(p => p.data.type === 'paper' && p.data.featured)
+  .filter((paper) => paper.data.type === 'paper' && paper.data.featured)
   .sort((a, b) => b.data.year - a.data.year)
   .slice(0, 3);
 
-const activities = (await getCollection('activities'))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+const focusIcons = [Waves, Radio, Cpu, BrainCircuit];
+const focusStyles = [
+  'bg-cyan-50 text-cyan-700',
+  'bg-blue-50 text-[#002776]',
+  'bg-amber-50 text-amber-700',
+  'bg-emerald-50 text-emerald-700',
+];
+
+const projects = [
+  {
+    period: '2024—2027',
+    title: 'Millimeter-Wave and Sub-Terahertz PLLs for Beyond-5G/6G Systems',
+    kind: 'National research project',
+  },
+  {
+    period: '2026—2029',
+    title: 'Investigation of Signaling Methods Within CMOS 2.0 Architectures',
+    kind: 'International research project',
+  },
+  {
+    period: '2026—2028',
+    title: 'MİTHAT: Millimeter/Terahertz Communication Technologies',
+    kind: 'National research project',
+  },
+];
 ---
 
 <Layout title="Home">
-  <!-- Hero Section -->
-  <section class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-    <!-- Background Image -->
-    <div class="absolute inset-0 z-0">
-      {SITE.hero.image ? (
-        <Image 
-          class="w-full h-full object-cover" 
-          src={SITE.hero.image} 
-          alt={SITE.hero.title}
-          loading="eager"
-          fetchpriority="high"
-          decoding="sync"
-          quality={60}
-          format="webp"
-          widths={[640, 1024, 1920]}
-          sizes="100vw"
-        />
-      ) : (
-        <div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800"></div>
-      )}
-      <!-- Dark Gradient Overlay for Readability -->
-      <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-      <!-- Subtle Texture (CSS only) -->
-      <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 32px 32px;"></div>
+  <section class="relative min-h-[calc(100svh-76px)] overflow-hidden bg-[#031522] text-white">
+    <div class="absolute inset-0">
+      <Image
+        src={SITE.hero.image}
+        alt="CMOS test chip on a high-frequency probe station"
+        class="h-full w-full object-cover object-[64%_center]"
+        widths={[720, 1080, 1440, 1800]}
+        sizes="100vw"
+        quality={82}
+        format="webp"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,21,34,0.98)_0%,rgba(3,21,34,0.89)_38%,rgba(3,21,34,0.34)_70%,rgba(3,21,34,0.2)_100%)]"></div>
+      <div class="signal-grid absolute inset-0 opacity-35"></div>
+      <div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#031522] to-transparent"></div>
     </div>
 
-    <!-- Content -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div class="section-shell relative z-10 flex min-h-[calc(100svh-76px)] items-center py-20">
       <div class="max-w-3xl">
-        <h1 class="text-5xl font-extrabold text-white sm:text-6xl md:text-7xl mb-6 drop-shadow-lg leading-tight">
-          <span class="block xl:inline">{SITE.hero.title}</span>
+        <div class="mb-7 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#8ee9e5] backdrop-blur-sm">
+          <Sparkles className="h-3.5 w-3.5 text-[#ffb547]" />
+          {SITE.hero.eyebrow}
+        </div>
+        <h1 class="max-w-3xl text-5xl font-bold leading-[0.97] tracking-[-0.055em] sm:text-6xl lg:text-[5.5rem]">
+          From silicon to <span class="text-[#65ded9]">sub-terahertz</span> systems.
         </h1>
-        <p class="mt-4 text-xl text-gray-300 sm:max-w-2xl md:text-2xl drop-shadow-md">
+        <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
           {SITE.hero.subtitle}
         </p>
-        <div class="mt-10 flex gap-4">
-          <a href="/achievements" class="flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-full text-black bg-white hover:bg-gray-100 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" data-i18n-key="hero.viewPubs">
-            View Publications
+        <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+          <a href="/research" class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-[#002776] transition hover:bg-[#dff9f7]">
+            Explore our research <ArrowRight className="h-4 w-4" />
           </a>
-          <a href="/team" class="flex items-center justify-center px-8 py-4 border-2 border-white/30 text-lg font-medium rounded-full text-white hover:bg-white/10 transition-all duration-300 backdrop-blur-sm" data-i18n-key="hero.meetTeam">
-            Meet the Team
+          <a href="/join" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/10">
+            Work with us <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-      </svg>
+    <div class="relative z-10 border-t border-white/10 bg-[#031522]/70 backdrop-blur-md">
+      <div class="section-shell grid divide-y divide-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <div class="py-5 sm:px-7 sm:first:pl-0">
+          <p class="text-2xl font-bold text-white">120 Gb/s</p>
+          <p class="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">CMOS transceiver milestone</p>
+        </div>
+        <div class="py-5 sm:px-7">
+          <p class="text-2xl font-bold text-white">300 GHz</p>
+          <p class="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">Sub-THz circuit research</p>
+        </div>
+        <div class="py-5 sm:px-7">
+          <p class="text-2xl font-bold text-white">Device → System</p>
+          <p class="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">End-to-end research scope</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Selected Publications -->
-  <section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-end mb-8">
-        <h2 class="text-3xl font-bold text-gray-900" data-i18n-key="section.selectedPubs">Selected Publications</h2>
-        <a href="/achievements" class="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 group">
-          <span data-i18n-key="section.viewAll">View all</span> <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </a>
-      </div>
-
-      <div class="grid gap-6 md:grid-cols-3">
-        {papers.map(paper => {
-          const link = paper.data.links?.website || paper.data.links?.pdf || '/achievements';
-          const isExternal = link.startsWith('http');
-          return (
-          <a 
-            href={link}
-            target={isExternal ? "_blank" : undefined}
-            rel={isExternal ? "noopener noreferrer" : undefined} 
-            class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all hover:-translate-y-1 overflow-hidden flex flex-col h-full group"
-          >
-             {paper.data.cover && (
-               <div class="h-48 overflow-hidden border-b border-gray-100 bg-gray-50">
-                 <Image 
-                   src={paper.data.cover} 
-                   alt={paper.data.title}
-                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                   quality={60}
-                   format="webp"
-                   widths={[320, 480]}
-                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                 />
-               </div>
-             )}
-             <div class="p-6 flex flex-col flex-grow">
-               <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                 {paper.data.title}
-               </h3>
-               <p class="text-gray-600 mb-4 text-sm line-clamp-2 flex-grow" title={paper.data.authors.join(', ')}>
-                 {paper.data.authors.length > 3 
-                   ? `${paper.data.authors.slice(0, 3).join(', ')}, et al.` 
-                   : paper.data.authors.join(', ')}
-               </p>
-               <div class="flex items-center justify-between text-sm mt-auto gap-4">
-                  <span class="font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded truncate text-left block max-w-full" title={paper.data.venue}>{paper.data.venue}</span>
-                  <span class="text-gray-500 shrink-0">{paper.data.year}</span>
-               </div>
-             </div>
+  <section class="py-20 sm:py-28">
+    <div class="section-shell">
+      <div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+        <div>
+          <span class="eyebrow">Our mission</span>
+          <h2 class="mt-5 text-4xl font-bold leading-tight tracking-[-0.045em] text-[#071b26] sm:text-5xl">
+            Building the hardware foundations of future connectivity.
+          </h2>
+        </div>
+        <div class="self-end">
+          <p class="text-lg leading-8 text-slate-600">
+            Tokgöz Lab is an integrated-circuits and systems research group at Sabancı University. We connect transistor-level design, high-frequency measurement, communication theory, and intelligent edge systems to solve problems that no single layer can address alone.
+          </p>
+          <a href="/research" class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#007f80] hover:text-[#005f61]">
+            See how we work across the stack <ArrowRight className="h-4 w-4" />
           </a>
-        )})}
+        </div>
+      </div>
+
+      <div class="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        {researchAreas.map((area, index) => {
+          const Icon = focusIcons[index % focusIcons.length];
+          return (
+            <a href={`/research/${area.id.replace(/\.[^/.]+$/, '')}`} class="card-lift group rounded-2xl border border-slate-200 bg-white p-6">
+              <div class:list={['flex h-12 w-12 items-center justify-center rounded-xl', focusStyles[index % focusStyles.length]]}>
+                <Icon className="h-6 w-6" />
+              </div>
+              <h3 class="mt-6 text-lg font-bold leading-snug text-[#071b26] group-hover:text-[#006f72]">{area.data.title}</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-600">{area.data.description}</p>
+              <span class="mt-5 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.1em] text-[#007f80]">
+                Learn more <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+              </span>
+            </a>
+          );
+        })}
       </div>
     </div>
   </section>
 
-  <!-- Latest Activities -->
-  <section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-end mb-8">
-        <h2 class="text-3xl font-bold text-gray-900" data-i18n-key="section.latestNews">Latest Activities</h2>
-        <a href="/activities" class="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 group">
-          <span data-i18n-key="section.viewAll">View all</span> <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+  <section class="overflow-hidden bg-[#f3f7fa] py-20 sm:py-28">
+    <div class="section-shell">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div class="max-w-2xl">
+          <span class="eyebrow">Selected active projects</span>
+          <h2 class="mt-5 text-4xl font-bold tracking-[-0.04em] text-[#071b26]">Research in motion.</h2>
+          <p class="mt-4 leading-7 text-slate-600">Current directions spanning frequency synthesis, emerging CMOS architectures, and millimeter/terahertz communications.</p>
+        </div>
+        <a href="https://fens.sabanciuniv.edu/en/en/research-areas/projects" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-bold text-[#007f80]">
+          University project directory <ArrowUpRight className="h-4 w-4" />
         </a>
       </div>
 
-      <div class="grid gap-8 md:grid-cols-3">
-        {activities.map(item => {
-          const link = `/activities/${item.id.replace(/\.[^/.]+$/, "")}`;
-          return (
-          <div class="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
-            {item.data.cover && (
-              <a href={link} class="block h-48 overflow-hidden">
-                <Image 
-                  src={item.data.cover} 
-                  alt={item.data.title}
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  quality={80}
-                  format="webp"
-                  widths={[320, 480, 600]}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              </a>
-            )}
-            <div class="p-6">
-              <div class="text-sm text-gray-500 mb-2 flex items-center gap-2">
-                 <Calendar className="w-4 h-4" />
-                 {item.data.date.toLocaleDateString()}
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">
-                <a href={link}>{item.data.title}</a>
-              </h3>
-              <p class="text-gray-600 line-clamp-3 text-sm">{item.data.description || (item.body || '').substring(0, 100)}</p>
-            </div>
-          </div>
-        )})}
+      <div class="mt-12 grid gap-5 lg:grid-cols-3">
+        {projects.map((project, index) => (
+          <article class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+            <span class="absolute right-6 top-5 font-mono text-5xl font-bold text-slate-100">0{index + 1}</span>
+            <p class="relative text-xs font-bold uppercase tracking-[0.14em] text-[#007f80]">{project.period}</p>
+            <h3 class="relative mt-8 min-h-24 text-xl font-bold leading-snug text-[#071b26]">{project.title}</h3>
+            <p class="relative mt-5 border-t border-slate-100 pt-4 text-sm text-slate-500">{project.kind}</p>
+          </article>
+        ))}
       </div>
+    </div>
+  </section>
+
+  <section class="py-20 sm:py-28">
+    <div class="section-shell">
+      <div class="flex items-end justify-between gap-6">
+        <div>
+          <span class="eyebrow">Research output</span>
+          <h2 class="mt-5 text-4xl font-bold tracking-[-0.04em] text-[#071b26]">Selected publications.</h2>
+        </div>
+        <a href="/publications" class="hidden items-center gap-2 text-sm font-bold text-[#007f80] sm:inline-flex">
+          View all <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+
+      <div class="mt-10 divide-y divide-slate-200 border-y border-slate-200">
+        {papers.map((paper, index) => {
+          const target = paper.data.links?.website || paper.data.links?.pdf;
+          return (
+            <article class="group grid gap-4 py-7 md:grid-cols-[4rem_1fr_auto] md:items-center md:gap-7">
+              <span class="font-mono text-sm font-bold text-slate-400">0{index + 1}</span>
+              <div>
+                <h3 class="text-lg font-bold leading-snug text-[#071b26] transition group-hover:text-[#006f72]">
+                  {target ? <a href={target} target="_blank" rel="noopener noreferrer">{paper.data.title}</a> : paper.data.title}
+                </h3>
+                <p class="mt-2 line-clamp-1 text-sm text-slate-500">{paper.data.authors.join(', ')}</p>
+              </div>
+              <div class="flex items-center gap-3 md:justify-end">
+                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">{paper.data.venue}</span>
+                <span class="font-mono text-sm font-bold text-[#002776]">{paper.data.year}</span>
+                {target && <ArrowUpRight className="h-4 w-4 text-slate-400 transition group-hover:text-[#007f80]" />}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      <a href="/publications" class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#007f80] sm:hidden">
+        View all publications <ArrowRight className="h-4 w-4" />
+      </a>
+    </div>
+  </section>
+
+  <section class="bg-[#061a2b] py-20 text-white sm:py-28">
+    <div class="section-shell grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div class="relative mx-auto max-w-sm lg:mx-0">
+        <div class="absolute -inset-4 rounded-[2rem] border border-[#5de4df]/20"></div>
+        <Image src={profileImage} alt="Korkut Kaan Tokgöz" class="relative aspect-square w-full rounded-[1.5rem] object-cover" widths={[320, 480, 640]} sizes="(max-width: 1024px) 80vw, 32vw" quality={88} />
+        <div class="absolute -bottom-6 -right-5 rounded-2xl border border-white/10 bg-[#0b2940] px-5 py-4 shadow-2xl">
+          <p class="text-xs font-bold uppercase tracking-[0.15em] text-[#7bdedb]">Principal Investigator</p>
+          <p class="mt-1 font-bold">Sabancı University</p>
+        </div>
+      </div>
+
+      <div>
+        <span class="eyebrow !text-[#7bdedb]">Lab leadership</span>
+        <h2 class="mt-5 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">Korkut Kaan Tokgöz</h2>
+        <p class="mt-6 text-lg leading-8 text-slate-300">
+          Korkut Kaan Tokgöz leads the group at Sabancı University’s Faculty of Engineering and Natural Sciences. His background spans CMOS transceivers, high-frequency device characterization, 5G systems at NEC, and academic research at Tokyo Institute of Technology.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/team/korkut-kaan-tokgoz" class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#002776]">
+            PI profile <ArrowRight className="h-4 w-4" />
+          </a>
+          <a href={SITE.profile.scholarUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-3 text-sm font-bold text-white hover:bg-white/10">
+            <GraduationCap className="h-4 w-4" /> Google Scholar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 sm:py-24">
+    <div class="section-shell overflow-hidden rounded-[2rem] bg-[#002776] px-6 py-12 text-white sm:px-12 lg:flex lg:items-center lg:justify-between lg:gap-12 lg:px-16">
+      <div class="max-w-2xl">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#75e3de]">Join the lab</p>
+        <h2 class="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Curious about circuits beyond today’s limits?</h2>
+        <p class="mt-4 leading-7 text-blue-100">We welcome prospective graduate and undergraduate researchers interested in integrated circuits, high-frequency systems, and intelligent hardware.</p>
+      </div>
+      <a href="/join" class="mt-8 inline-flex shrink-0 items-center gap-2 rounded-full bg-[#ffb547] px-6 py-3.5 text-sm font-bold text-[#071b26] transition hover:bg-[#ffc66e] lg:mt-0">
+        Explore opportunities <ArrowUpRight className="h-4 w-4" />
+      </a>
     </div>
   </section>
 </Layout>
