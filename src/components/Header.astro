@@ -1,10 +1,13 @@
 ---
 import { ArrowUpRight, Menu, Search, X } from 'lucide-react';
-import { SITE } from '../config';
+import { SITE, withBase } from '../config';
 
 const pathname = Astro.url.pathname;
+const homeLink = withBase('/');
+const searchLink = withBase('/search');
+const joinLink = withBase('/join');
 const regularNav = SITE.nav.filter((item) => !['search', 'join'].includes(item.key));
-const isActive = (link: string) => pathname === link || (link !== '/' && pathname.startsWith(`${link}/`));
+const isActive = (link: string) => pathname === link || (link !== homeLink && pathname.startsWith(`${link}/`));
 ---
 
 <header class="site-header sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
@@ -12,7 +15,7 @@ const isActive = (link: string) => pathname === link || (link !== '/' && pathnam
   <div class="h-1 bg-gradient-to-r from-[#002776] via-[#00a6a6] to-[#ffb547]"></div>
 
   <div class="mx-auto flex h-[72px] max-w-[90rem] items-center justify-between px-4 sm:px-6 lg:px-10">
-    <a href="/" class="group flex min-w-0 items-center gap-3" aria-label={`${SITE.labName} home`}>
+    <a href={homeLink} class="group flex min-w-0 items-center gap-3" aria-label={`${SITE.labName} home`}>
       <img src={SITE.logo} width="44" height="44" alt="" class="h-11 w-11 shrink-0 transition-transform duration-300 group-hover:-rotate-3" />
       <span class="min-w-0">
         <span class="block text-[1.05rem] font-bold tracking-[-0.02em] text-[#071b26]">{SITE.labName}</span>
@@ -39,7 +42,7 @@ const isActive = (link: string) => pathname === link || (link !== '/' && pathnam
       ))}
 
       <a
-        href="/search"
+        href={searchLink}
         class="ml-1 rounded-full p-2.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#002776]"
         aria-label="Search"
       >
@@ -47,7 +50,7 @@ const isActive = (link: string) => pathname === link || (link !== '/' && pathnam
       </a>
 
       <a
-        href="/join"
+        href={joinLink}
         class="ml-2 inline-flex items-center gap-1.5 rounded-full bg-[#002776] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#001d5a] hover:shadow-md"
       >
         Opportunities <ArrowUpRight className="h-4 w-4" />
@@ -81,10 +84,10 @@ const isActive = (link: string) => pathname === link || (link !== '/' && pathnam
           {item.text}
         </a>
       ))}
-      <a href="/search" class="flex items-center gap-2 rounded-xl px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50">
+      <a href={searchLink} class="flex items-center gap-2 rounded-xl px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50">
         <Search className="h-4 w-4" /> Search
       </a>
-      <a href="/join" class="mt-2 flex items-center justify-between rounded-xl bg-[#002776] px-4 py-3 font-bold text-white">
+      <a href={joinLink} class="mt-2 flex items-center justify-between rounded-xl bg-[#002776] px-4 py-3 font-bold text-white">
         Opportunities <ArrowUpRight className="h-4 w-4" />
       </a>
     </nav>

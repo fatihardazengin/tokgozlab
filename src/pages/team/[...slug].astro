@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { ArrowLeft, ArrowUpRight, ExternalLink, GraduationCap, Mail } from 'lucide-react';
 import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../config';
 
 export async function getStaticPaths() {
   const teamMembers = await getCollection('team');
@@ -20,7 +21,7 @@ const { name, role, title, avatar, email, website, linkedin, googleScholar, bio 
   <header class="relative overflow-hidden bg-[#061a2b] text-white">
     <div class="signal-grid absolute inset-0 opacity-50"></div>
     <div class="section-shell relative py-12 sm:py-18">
-      <a href="/team" class="inline-flex items-center gap-2 text-sm font-bold text-[#7bdedb] hover:text-white">
+      <a href={withBase('/team')} class="inline-flex items-center gap-2 text-sm font-bold text-[#7bdedb] hover:text-white">
         <ArrowLeft className="h-4 w-4" /> Back to people
       </a>
 
@@ -63,7 +64,7 @@ const { name, role, title, avatar, email, website, linkedin, googleScholar, bio 
           <dd class="mt-1 leading-6 text-slate-600">CMOS circuits · sub-THz · 6G · Edge AI · IoT</dd>
         </div>
       </dl>
-      <a href="/publications" class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#002776]">Selected publications <ArrowUpRight className="h-4 w-4" /></a>
+      <a href={withBase('/publications')} class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#002776]">Selected publications <ArrowUpRight className="h-4 w-4" /></a>
     </aside>
   </article>
 </Layout>

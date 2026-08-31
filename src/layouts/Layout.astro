@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import { ArrowUpRight, Mail, MapPin } from 'lucide-react';
-import { LOCALE, SITE } from '../config';
+import { LOCALE, SITE, withBase } from '../config';
 
 interface Props {
   title?: string;
@@ -14,12 +14,21 @@ const { title, description = SITE.description } = Astro.props;
 const pageTitle = title && title !== 'Home' ? `${title} · ${SITE.labName}` : `${SITE.labName} · ${SITE.university}`;
 const siteBase = Astro.site ?? new URL(Astro.url.origin);
 const canonicalUrl = new URL(Astro.url.pathname, siteBase);
-const currentPath = Astro.url.pathname.replace(/^\/|\/$/g, '');
+const homeLink = withBase('/');
+const basePrefix = import.meta.env.BASE_URL;
+const baseNoSlash = basePrefix.replace(/\/$/, '');
+const isHomePage = Astro.url.pathname === basePrefix || Astro.url.pathname === baseNoSlash;
+const pathWithoutBase = Astro.url.pathname.startsWith(basePrefix)
+  ? Astro.url.pathname.slice(basePrefix.length)
+  : Astro.url.pathname.startsWith(baseNoSlash)
+    ? Astro.url.pathname.slice(baseNoSlash.length)
+    : Astro.url.pathname.replace(/^\//, '');
+const currentPath = pathWithoutBase.replace(/^\/|\/$/g, '');
 const ogSlug = currentPath || 'index';
 const supportedTopLevel = ['index', 'research', 'projects', 'team', 'publications', 'news', 'join'];
 const topLevel = ogSlug.split('/')[0];
 const finalOgSlug = supportedTopLevel.includes(topLevel) ? ogSlug : 'index';
-const ogImage = new URL(`/og/${finalOgSlug}.png`, siteBase);
+const ogImage = new URL(withBase(`/og/${finalOgSlug}.png`), siteBase);
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -72,7 +81,7 @@ const organizationSchema = {
     <meta name="description" content={description} />
     <meta name="theme-color" content="#002776" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <link rel="canonical" href={canonicalUrl} />
     <title>{pageTitle}</title>
 
@@ -87,7 +96,7 @@ const organizationSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    {Astro.url.pathname === '/' && <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />}
+    {isHomePage && <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />}
   </head>
   <body class="min-h-screen bg-white text-slate-800">
     <Header />
@@ -99,7 +108,7 @@ const organizationSchema = {
       <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#5de4df] to-transparent opacity-60"></div>
       <div class="mx-auto grid max-w-[90rem] gap-12 px-4 py-14 sm:px-6 md:grid-cols-[1.3fr_0.7fr_1fr] lg:px-10 lg:py-18">
         <div class="max-w-md">
-          <a href="/" class="inline-flex items-center gap-3 text-white">
+          <a href={homeLink} class="inline-flex items-center gap-3 text-white">
             <img src={SITE.logo} width="44" height="44" alt="" class="h-11 w-11" />
             <span>
               <span class="block text-lg font-bold">{SITE.labName}</span>

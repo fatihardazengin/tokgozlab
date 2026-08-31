@@ -1,5 +1,13 @@
 import heroImage from './assets/tokgoz-lab-hero.png';
 
+// Prefixes an app-root path (e.g. '/research') with Astro's configured `base`
+// (e.g. '/tokgozlab'), so links and public/ assets resolve under GitHub Pages'
+// project subpath. Astro does not do this automatically for literal strings.
+export const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  return path === '/' ? `${base}/` : `${base}${path}`;
+};
+
 export const SITE = {
   // Set Astro's `site` option when the lab's production domain is chosen.
   website: '',
@@ -7,15 +15,15 @@ export const SITE = {
   description:
     'Tokgöz Lab at Sabancı University develops energy-efficient mmWave and sub-terahertz CMOS circuits, integrated systems, and intelligent hardware for future communications.',
   title: 'Tokgöz Lab',
-  ogImage: '/og/index.png',
+  ogImage: withBase('/og/index.png'),
   lightAndDarkMode: false,
   postPerPage: 10,
   scheduledPostMargin: 15 * 60 * 1000,
 
   labName: 'Tokgöz Lab',
   university: 'Sabancı University · Electronics Engineering',
-  logo: '/assets/tokgoz-lab-mark.svg',
-  avatar: '/assets/tokgoz-lab-mark.svg',
+  logo: withBase('/assets/tokgoz-lab-mark.svg'),
+  avatar: withBase('/assets/tokgoz-lab-mark.svg'),
   email: 'korkut.tokgoz@sabanciuniv.edu',
 
   profile: {
@@ -46,12 +54,12 @@ export const SITE = {
   },
 
   nav: [
-    { text: 'Research', link: '/research', key: 'research' },
-    { text: 'Projects', link: '/projects', key: 'projects' },
-    { text: 'Publications', link: '/publications', key: 'publications' },
-    { text: 'People', link: '/team', key: 'team' },
-    { text: 'Opportunities', link: '/join', key: 'join' },
-    { text: 'Search', link: '/search', key: 'search' },
+    { text: 'Research', link: withBase('/research'), key: 'research' },
+    { text: 'Projects', link: withBase('/projects'), key: 'projects' },
+    { text: 'Publications', link: withBase('/publications'), key: 'publications' },
+    { text: 'People', link: withBase('/team'), key: 'team' },
+    { text: 'Opportunities', link: withBase('/join'), key: 'join' },
+    { text: 'Search', link: withBase('/search'), key: 'search' },
   ],
 
   customPages: [],

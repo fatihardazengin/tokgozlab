@@ -1,6 +1,7 @@
 ---
 import { ArrowRight, ExternalLink, GraduationCap, Mail } from 'lucide-react';
 import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../config';
 
 interface Props {
   member: CollectionEntry<'team'>;
@@ -9,22 +10,23 @@ interface Props {
 const { member } = Astro.props;
 const { name, role, title, avatar, bio, email, website, linkedin, googleScholar } = member.data;
 const slug = member.id.replace(/\.[^/.]+$/, '');
+const profileLink = withBase(`/team/${slug}`);
 ---
 
 <article class="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-  <a href={`/team/${slug}`} class="block aspect-square overflow-hidden bg-slate-100">
+  <a href={profileLink} class="block aspect-square overflow-hidden bg-slate-100">
     <img src={avatar.src} alt={name} class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.025]" loading="lazy" />
   </a>
   <div class="p-6">
     <p class="text-xs font-bold uppercase tracking-[0.14em] text-[#007f80]">{role}</p>
-    <a href={`/team/${slug}`} class="mt-2 block">
+    <a href={profileLink} class="mt-2 block">
       <h3 class="text-xl font-bold tracking-[-0.02em] text-[#071b26] transition group-hover:text-[#006f72]">{name}</h3>
     </a>
     {title?.[0] && <p class="mt-2 text-sm font-semibold text-slate-500">{title[0]}</p>}
     {bio && <p class="mt-4 line-clamp-3 text-sm leading-6 text-slate-600">{bio}</p>}
 
     <div class="mt-6 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-5">
-      <a href={`/team/${slug}`} class="mr-auto inline-flex items-center gap-1.5 text-sm font-bold text-[#002776]">
+      <a href={profileLink} class="mr-auto inline-flex items-center gap-1.5 text-sm font-bold text-[#002776]">
         Profile <ArrowRight className="h-4 w-4" />
       </a>
       {email && <a href={`mailto:${email}`} class="rounded-full border border-slate-200 p-2 text-slate-500 transition hover:border-[#00a6a6] hover:text-[#006f72]" aria-label={`Email ${name}`}><Mail className="h-4 w-4" /></a>}

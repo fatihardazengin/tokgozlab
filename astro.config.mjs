@@ -6,6 +6,8 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://fatihardazengin.github.io',
+  base: '/tokgozlab',
   compressHTML: true,
   build: {
     inlineStylesheets: 'always',

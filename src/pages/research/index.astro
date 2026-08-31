@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { ArrowRight, BrainCircuit, Cpu, Gauge, Radio, Waves } from 'lucide-react';
 import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../config';
 
 const researchAreas = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
 const icons = [Waves, Radio, Cpu, BrainCircuit];
@@ -41,7 +42,7 @@ const numbers = ['01', '02', '03', '04'];
               <p class="mt-4 max-w-3xl leading-7 text-slate-600">{area.data.description}</p>
             </div>
             <div class="px-7 pb-8 md:p-8">
-              <a href={`/research/${area.id.replace(/\.[^/.]+$/, '')}`} class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 text-[#002776] transition group-hover:border-[#00a6a6] group-hover:bg-[#e7f7f6]" aria-label={`Read about ${area.data.title}`}>
+              <a href={withBase(`/research/${area.id.replace(/\.[^/.]+$/, '')}`)} class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 text-[#002776] transition group-hover:border-[#00a6a6] group-hover:bg-[#e7f7f6]" aria-label={`Read about ${area.data.title}`}>
                 <ArrowRight className="h-5 w-5" />
               </a>
             </div>

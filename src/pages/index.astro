@@ -12,7 +12,7 @@ import {
   Waves,
 } from 'lucide-react';
 import Layout from '../layouts/Layout.astro';
-import { SITE } from '../config';
+import { SITE, withBase } from '../config';
 import profileImage from '../assets/korkut-kaan-tokgoz.jpg';
 
 const researchAreas = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
@@ -80,10 +80,10 @@ const projects = [
           {SITE.hero.subtitle}
         </p>
         <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-          <a href="/research" class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-[#002776] transition hover:bg-[#dff9f7]">
+          <a href={withBase('/research')} class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-[#002776] transition hover:bg-[#dff9f7]">
             Explore our research <ArrowRight className="h-4 w-4" />
           </a>
-          <a href="/join" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/10">
+          <a href={withBase('/join')} class="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/10">
             Work with us <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
@@ -121,7 +121,7 @@ const projects = [
           <p class="text-lg leading-8 text-slate-600">
             Tokgöz Lab is an integrated-circuits and systems research group at Sabancı University. We connect transistor-level design, high-frequency measurement, communication theory, and intelligent edge systems to solve problems that no single layer can address alone.
           </p>
-          <a href="/research" class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#007f80] hover:text-[#005f61]">
+          <a href={withBase('/research')} class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#007f80] hover:text-[#005f61]">
             See how we work across the stack <ArrowRight className="h-4 w-4" />
           </a>
         </div>
@@ -131,7 +131,7 @@ const projects = [
         {researchAreas.map((area, index) => {
           const Icon = focusIcons[index % focusIcons.length];
           return (
-            <a href={`/research/${area.id.replace(/\.[^/.]+$/, '')}`} class="card-lift group rounded-2xl border border-slate-200 bg-white p-6">
+            <a href={withBase(`/research/${area.id.replace(/\.[^/.]+$/, '')}`)} class="card-lift group rounded-2xl border border-slate-200 bg-white p-6">
               <div class:list={['flex h-12 w-12 items-center justify-center rounded-xl', focusStyles[index % focusStyles.length]]}>
                 <Icon className="h-6 w-6" />
               </div>
@@ -180,7 +180,7 @@ const projects = [
           <span class="eyebrow">Research output</span>
           <h2 class="mt-5 text-4xl font-bold tracking-[-0.04em] text-[#071b26]">Selected publications.</h2>
         </div>
-        <a href="/publications" class="hidden items-center gap-2 text-sm font-bold text-[#007f80] sm:inline-flex">
+        <a href={withBase('/publications')} class="hidden items-center gap-2 text-sm font-bold text-[#007f80] sm:inline-flex">
           View all <ArrowRight className="h-4 w-4" />
         </a>
       </div>
@@ -206,7 +206,7 @@ const projects = [
           );
         })}
       </div>
-      <a href="/publications" class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#007f80] sm:hidden">
+      <a href={withBase('/publications')} class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#007f80] sm:hidden">
         View all publications <ArrowRight className="h-4 w-4" />
       </a>
     </div>
@@ -230,7 +230,7 @@ const projects = [
           Korkut Kaan Tokgöz leads the group at Sabancı University’s Faculty of Engineering and Natural Sciences. His background spans CMOS transceivers, high-frequency device characterization, 5G systems at NEC, and academic research at Tokyo Institute of Technology.
         </p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href="/team/korkut-kaan-tokgoz" class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#002776]">
+          <a href={withBase('/team/korkut-kaan-tokgoz')} class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#002776]">
             PI profile <ArrowRight className="h-4 w-4" />
           </a>
           <a href={SITE.profile.scholarUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-3 text-sm font-bold text-white hover:bg-white/10">
@@ -248,7 +248,7 @@ const projects = [
         <h2 class="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Curious about circuits beyond today’s limits?</h2>
         <p class="mt-4 leading-7 text-blue-100">We welcome prospective graduate and undergraduate researchers interested in integrated circuits, high-frequency systems, and intelligent hardware.</p>
       </div>
-      <a href="/join" class="mt-8 inline-flex shrink-0 items-center gap-2 rounded-full bg-[#ffb547] px-6 py-3.5 text-sm font-bold text-[#071b26] transition hover:bg-[#ffc66e] lg:mt-0">
+      <a href={withBase('/join')} class="mt-8 inline-flex shrink-0 items-center gap-2 rounded-full bg-[#ffb547] px-6 py-3.5 text-sm font-bold text-[#071b26] transition hover:bg-[#ffc66e] lg:mt-0">
         Explore opportunities <ArrowUpRight className="h-4 w-4" />
       </a>
     </div>
