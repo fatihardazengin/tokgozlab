@@ -1,6 +1,6 @@
 # Tokgöz Lab
 
-**[English](./README.md) | [简体中文](./README.zh-CN.md)**
+**[English](./README.md) | [Türkçe](./README.tr.md)**
 
 Website for the Tokgöz Lab at Sabancı University, Electronics Engineering. The lab works on energy-efficient millimeter-wave and sub-terahertz CMOS circuits, integrated systems, and intelligent hardware for future (6G) communications.
 
