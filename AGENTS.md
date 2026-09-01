@@ -53,9 +53,11 @@ Three collections, defined in `src/content.config.ts`:
 
 | Collection | Source | Key fields | Sort |
 |---|---|---|---|
-| `publications` | `src/content/publications/*.md` | `title`, `authors[]`, `year`, `venue`, `type` (paper/book/patent/software), `cover`, `links.{pdf,code,website,demo,slides,video}`, `badges[]`, `featured` | by `year` desc |
-| `team` | `src/content/team/*.md` | `name`, `role` (enum, see schema), `avatar`, `bio`, `email`, social links, `weight` | by `weight` asc |
-| `research` | `src/content/research/*.md` | `title`, `description`, `cover`, `order` | by `order` asc |
+| `publications` | `src/content/publications/*.md` | `title`, `authors[]`, `year`, `venue`, `type` (paper/book/patent/software), `description`, `doi`, `award`, `links.{pdf,code,website,demo,slides,video}`, `badges[]`, `featured` | by `year` desc |
+| `team` | `src/content/team/*.md` | `name`, `role` (enum, see schema), `title[]`, `avatar`, `bio`, `email`, social links, `weight` | by `weight` asc |
+| `research` | `src/content/research/*.md` | `title`, `description`, `order` | by `order` asc |
+
+(There is no `cover` field on any collection — it existed in both schemas plus matching import-bibtex.js validation/fallback logic, but was never rendered anywhere in the UI, so it was removed in full, commit `07d8757`. Don't reintroduce a `cover:` field without also wiring it into the templates that would display it.)
 
 Images referenced in frontmatter (e.g. `avatar: "../../assets/x.jpg"`) must live under `src/assets/` and be imported via Astro's `image()` schema helper — this gets them optimized/compressed at build time. Anything placed in `public/` bypasses that optimization and is served as-is; `public/` is reserved for truly static files (favicon, fonts, robots.txt, the small lab mark SVG).
 
@@ -63,16 +65,31 @@ Images referenced in frontmatter (e.g. `avatar: "../../assets/x.jpg"`) must live
 
 `citations.bib` (repo root) → `npm run import-bibtex` (`scripts/import-bibtex.js`) → regenerates `src/content/publications/*.md`. It's a **plain Node script using `fs`**, no Astro APIs — it re-derives filenames from `year-firstAuthor-titleSlug`, so re-running it after editing `citations.bib` will overwrite previously generated files with the same derived name. It does preserve a manually-set `featured: true` across re-imports by reading the existing file first, but no other manual edits to a generated `.md` file survive a re-import — if you hand-edit a publication file, expect it to be clobbered next time someone runs the importer with an unchanged `citations.bib` entry.
 
+## How to add content (recipes)
+
+`README.md`/`README.tr.md` have the full walkthrough aimed at non-developers (exact field-by-field explanations, where to get a BibTeX entry, etc.) — read one of those for the complete picture. This section is the compressed version for acting directly.
+
+**Add a team member**: create `src/content/team/<slug>.md` (slug = filename, becomes `/team/<slug>`). Required: `name`, `role` (must be **exactly** one of `Principal Investigator`, `Professor`, `Associate Professor`, `Assistant Professor`, `Postdoc`, `Research Assistant`, `PhD Student`, `Master Student`, `Undergraduate`, `Alumni` — any other string fails schema validation and breaks the whole build), `avatar` (path to a square photo you first add under `src/assets/`, referenced as `"../../assets/<file>"`). Optional: `title[]`, `bio`, `email`, `website`, `linkedin`, `github`, `twitter`, `googleScholar`, `weight` (sort order *within* the role group, lower = first, default 100). Body text below the frontmatter is the long-form bio (Markdown).
+
+**Add a publication**: prefer editing `citations.bib` (repo root) and letting `scripts/import-bibtex.js` regenerate `src/content/publications/*.md` — don't hand-write publication `.md` files unless the entry has no BibTeX source at all. The importer runs automatically as the first step of `npm run build`, so committing an updated `citations.bib` is sufficient; running `npm run import-bibtex` locally is only needed to preview the result. Field mapping (BibTeX → schema) lives in `scripts/import-bibtex.js`; the README has the full table. Two things worth knowing before touching this: (1) only entries whose derived `type` is `"paper"` show up on `/publications` — `@book` entries are parsed but land in the dead `books`-collection path described above and render nowhere; (2) re-running the importer regenerates a file's frontmatter from scratch (filename = `year-firstAuthor-titleSlug.md`), clobbering any manual edit to that file except a hand-set `featured: true`, which is read back and preserved.
+
+**Add a research area**: create `src/content/research/<slug>.md` with `title`, `description` (required), `order` (optional, default 100, lower sorts first). Body is the Markdown page content.
+
+**Add/edit a project**: edit the `activeProjects`/`completedProjects` arrays in `src/data/projects.ts` directly — plain object literals, no schema/build step involved. The first 3 entries of `activeProjects` also feed the homepage teaser (`index.astro`), so reordering here changes both pages.
+
+**Change site-wide settings** (contact email, phone/address, PI's external profile links, nav menu items, social icons): edit the `SITE`/`SOCIALS` objects in `src/config.ts`. Don't rename the `key` values inside `SITE.nav` entries — components filter on them (`Header.astro`, `Layout.astro` footer).
+
 ## Pages (`src/pages/`)
 
-- `index.astro` — homepage: hero, featured research areas, featured publications.
+- `index.astro` — homepage: hero, featured research areas, top 3 of `activeProjects` (see below), featured publications.
 - `research/index.astro`, `research/[slug].astro` — research area listing + detail (Markdown body rendered via `render()`).
-- `projects.astro` — **hardcoded** arrays of active/completed projects (not a content collection) — edit this file directly to update project status/dates.
+- `projects.astro` — full active/completed project lists. Imports `activeProjects`/`completedProjects` from `src/data/projects.ts` — a plain TS array, **not** a content collection. Edit that data file, not this page, to change project status/dates.
 - `publications.astro` — full publication list, filtered to `type === 'paper'`, grouped/sorted by year.
 - `team.astro`, `team/[...slug].astro` — team listing (grouped by role) + individual profile pages.
 - `join.astro` — "Opportunities" page, static content describing how to apply (mailto link + external university links).
 - `search.astro` — Pagefind UI mount point.
 - `og/[...slug].png.ts` — generates one OG image per static page + per publication/team/research slug at build time.
+- `404.astro` — branded not-found page; Astro emits it as `dist/404.html`, which GitHub Pages serves automatically for any unmatched path under `/tokgozlab/`.
 
 ## Build-time scripts (`scripts/`, plain Node/ESM, no Astro runtime)
 
