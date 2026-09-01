@@ -14,6 +14,7 @@ import {
 import Layout from '../layouts/Layout.astro';
 import { SITE, withBase } from '../config';
 import profileImage from '../assets/korkut-kaan-tokgoz.jpg';
+import { activeProjects } from '../data/projects';
 
 const researchAreas = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
 const papers = (await getCollection('publications'))
@@ -29,23 +30,7 @@ const focusStyles = [
   'bg-emerald-50 text-emerald-700',
 ];
 
-const projects = [
-  {
-    period: '2024—2027',
-    title: 'Millimeter-Wave and Sub-Terahertz PLLs for Beyond-5G/6G Systems',
-    kind: 'National research project',
-  },
-  {
-    period: '2026—2029',
-    title: 'Investigation of Signaling Methods Within CMOS 2.0 Architectures',
-    kind: 'International research project',
-  },
-  {
-    period: '2026—2028',
-    title: 'MİTHAT: Millimeter/Terahertz Communication Technologies',
-    kind: 'National research project',
-  },
-];
+const projects = activeProjects.slice(0, 3);
 ---
 
 <Layout title="Home">
@@ -166,7 +151,7 @@ const projects = [
             <span class="absolute right-6 top-5 font-mono text-5xl font-bold text-slate-100">0{index + 1}</span>
             <p class="relative text-xs font-bold uppercase tracking-[0.14em] text-[#007f80]">{project.period}</p>
             <h3 class="relative mt-8 min-h-24 text-xl font-bold leading-snug text-[#071b26]">{project.title}</h3>
-            <p class="relative mt-5 border-t border-slate-100 pt-4 text-sm text-slate-500">{project.kind}</p>
+            <p class="relative mt-5 border-t border-slate-100 pt-4 text-sm text-slate-500">{project.type} research project</p>
           </article>
         ))}
       </div>
