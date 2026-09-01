@@ -1,0 +1,26 @@
+---
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Layout from '../layouts/Layout.astro';
+import { withBase } from '../config';
+---
+
+<Layout title="Page not found" description="The page you're looking for doesn't exist.">
+  <section class="relative overflow-hidden bg-[#061a2b] py-24 text-white sm:py-32">
+    <div class="signal-grid absolute inset-0 opacity-40"></div>
+    <div class="section-shell relative z-10 text-center">
+      <p class="font-mono text-sm font-bold uppercase tracking-[0.2em] text-[#7bdedb]">Error 404</p>
+      <h1 class="mt-5 text-5xl font-bold tracking-[-0.05em] sm:text-7xl">Signal lost.</h1>
+      <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-slate-300">
+        The page you're looking for doesn't exist, or has moved.
+      </p>
+      <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a href={withBase('/')} class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-[#002776] transition hover:bg-[#dff9f7]">
+          <ArrowLeft className="h-4 w-4" /> Back to home
+        </a>
+        <a href={withBase('/research')} class="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/10">
+          Explore our research <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
