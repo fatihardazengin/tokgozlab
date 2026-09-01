@@ -29,7 +29,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run import-bibtex && astro build && pagefind --site dist",
+    "build": "npm run import-bibtex && astro build && node scripts/generate-sitemap.js && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
     "import-bibtex": "node scripts/import-bibtex.js",
