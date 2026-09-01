@@ -82,27 +82,7 @@ function importBibtex() {
     // For books, publisher is often the venue equivalent
     const venue = cleanString(tags.booktitle || tags.journal || tags.school || tags.publisher || tags.howpublished || tags.organization || tags.institution || 'Unknown Venue');
     const description = cleanString(tags.abstract || `Published in ${venue}.`);
-    
-    // Extract additional fields
-    // Cover image: check 'cover', 'image', 'figure'
-    let cover = cleanString(tags.cover || tags.image || tags.figure || '');
-    const DEFAULT_COVER = '../../assets/tokgoz-lab-hero.png';
 
-    // Validate cover image existence
-    if (cover) {
-      // Resolve path relative to src/content/publications or src/content/books
-      // ../../assets/xxx.jpg -> src/assets/xxx.jpg
-      const relativeToRoot = cover.replace('../../', 'src/');
-      const absolutePath = path.join(process.cwd(), relativeToRoot);
-      
-      if (!fs.existsSync(absolutePath)) {
-        console.warn(`Warning: Cover image not found at ${absolutePath}. Using default.`);
-        cover = DEFAULT_COVER;
-      }
-    } else {
-      cover = DEFAULT_COVER;
-    }
-    
     // PDF link
     let pdf = cleanString(tags.pdf || tags.file || tags.url || '');
     if (pdf.startsWith(':')) {
@@ -173,7 +153,6 @@ function importBibtex() {
       `venue: "${venue.replace(/"/g, '\\"')}"`,
       // Only add type for publications, not books
       isBook ? '' : `type: "${type}"`,
-      `cover: "${cover}"`,
       'links:',
       `  pdf: "${pdf}"`,
       `  code: "${code}"`,

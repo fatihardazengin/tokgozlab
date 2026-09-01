@@ -4,7 +4,6 @@ authors: ["Korkut Kaan Tokgöz", "Ibrahim Abdo", "Takuya Fujimura", "Jian Pang",
 year: 2019
 venue: "IEEE Microwave and Wireless Components Letters"
 type: "paper"
-cover: "../../assets/tokgoz-lab-hero.png"
 links:
   pdf: ""
   code: ""

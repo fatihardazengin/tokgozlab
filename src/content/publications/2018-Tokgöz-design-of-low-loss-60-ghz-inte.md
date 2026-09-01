@@ -4,7 +4,6 @@ authors: ["Korkut Kaan Tokgöz", "Seitaro Kawai", "Kenichi Okada", "Akira Matsuz
 year: 2018
 venue: "IEICE Electronics Express"
 type: "paper"
-cover: "../../assets/tokgoz-lab-hero.png"
 links:
   pdf: ""
   code: ""

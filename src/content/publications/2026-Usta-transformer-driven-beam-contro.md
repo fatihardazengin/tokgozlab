@@ -4,7 +4,6 @@ authors: ["Mahir Burak Usta", "Milad Bafarassat", "Mikail Erdem", "Özgür Gürb
 year: 2026
 venue: "IEEE Open Journal of the Communications Society"
 type: "paper"
-cover: "../../assets/tokgoz-lab-hero.png"
 links:
   pdf: ""
   code: ""

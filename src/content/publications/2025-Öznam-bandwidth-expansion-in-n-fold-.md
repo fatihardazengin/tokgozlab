@@ -4,7 +4,6 @@ authors: ["Ahmet Alperen Öznam", "Chouaieb Farhati", "Mohaned Chraiti", "Ali Gh
 year: 2025
 venue: "IEEE Communications Letters"
 type: "paper"
-cover: "../../assets/tokgoz-lab-hero.png"
 links:
   pdf: ""
   code: ""

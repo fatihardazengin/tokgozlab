@@ -4,7 +4,6 @@ authors: ["Aravind Tharayil Narayanan", "Ludovico Minati", "Aran Hagihara", "Jun
 year: 2024
 venue: "IEICE Electronics Express"
 type: "paper"
-cover: "../../assets/tokgoz-lab-hero.png"
 links:
   pdf: ""
   code: ""
