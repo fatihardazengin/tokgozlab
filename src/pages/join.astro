@@ -39,6 +39,24 @@ const paths = [
     </div>
   </header>
 
+  <section class="py-16 sm:py-20">
+    <div class="section-shell overflow-hidden rounded-[2rem] bg-[#061a2b] px-6 py-12 text-white sm:px-12 lg:flex lg:items-center lg:justify-between lg:gap-12 lg:px-16">
+      <div class="max-w-xl">
+        <span class="eyebrow !text-[#7bdedb]">Industry & partnerships</span>
+        <h2 class="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Looking to collaborate as a company?</h2>
+        <p class="mt-4 leading-7 text-slate-300">We work with industry partners on sponsored research, joint testbeds, and technology transfer across mmWave/sub-terahertz ICs, 6G systems, and Edge-AI hardware.</p>
+        <ul class="mt-6 space-y-2.5 text-sm text-slate-300">
+          <li class="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[#00a6a6]" /> Sponsored research & joint projects</li>
+          <li class="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[#00a6a6]" /> Technology licensing & transfer</li>
+          <li class="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[#00a6a6]" /> Recruiting talent from the lab</li>
+        </ul>
+      </div>
+      <a href={`mailto:${SITE.email}?subject=Industry%20collaboration%20%E2%80%94%20Tokg%C3%B6z%20Lab`} class="mt-8 inline-flex shrink-0 items-center gap-2 rounded-full bg-[#ffb547] px-6 py-3.5 text-sm font-bold text-[#071b26] transition hover:bg-[#ffc66e] lg:mt-0">
+        <Building2 className="h-4 w-4" /> Contact the lab
+      </a>
+    </div>
+  </section>
+
   <section class="py-16 sm:py-24">
     <div class="section-shell">
       <div class="max-w-3xl">
@@ -85,24 +103,6 @@ const paths = [
           ))}
         </ol>
       </div>
-    </div>
-  </section>
-
-  <section class="py-16 sm:py-20">
-    <div class="section-shell overflow-hidden rounded-[2rem] bg-[#061a2b] px-6 py-12 text-white sm:px-12 lg:flex lg:items-center lg:justify-between lg:gap-12 lg:px-16">
-      <div class="max-w-xl">
-        <span class="eyebrow !text-[#7bdedb]">Industry & partnerships</span>
-        <h2 class="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Looking to collaborate as a company?</h2>
-        <p class="mt-4 leading-7 text-slate-300">We work with industry partners on sponsored research, joint testbeds, and technology transfer across mmWave/sub-terahertz ICs, 6G systems, and Edge-AI hardware.</p>
-        <ul class="mt-6 space-y-2.5 text-sm text-slate-300">
-          <li class="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[#00a6a6]" /> Sponsored research & joint projects</li>
-          <li class="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[#00a6a6]" /> Technology licensing & transfer</li>
-          <li class="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[#00a6a6]" /> Recruiting talent from the lab</li>
-        </ul>
-      </div>
-      <a href={`mailto:${SITE.email}?subject=Industry%20collaboration%20%E2%80%94%20Tokg%C3%B6z%20Lab`} class="mt-8 inline-flex shrink-0 items-center gap-2 rounded-full bg-[#ffb547] px-6 py-3.5 text-sm font-bold text-[#071b26] transition hover:bg-[#ffc66e] lg:mt-0">
-        <Building2 className="h-4 w-4" /> Contact the lab
-      </a>
     </div>
   </section>
 
