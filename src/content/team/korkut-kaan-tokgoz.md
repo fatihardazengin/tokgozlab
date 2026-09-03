@@ -5,7 +5,7 @@ title: ["Faculty Member · Electronics Engineering"]
 avatar: "../../assets/korkut-kaan-tokgoz.jpg"
 bio: "Faculty member at Sabancı University working on millimeter-wave and sub-terahertz integrated circuits, energy-efficient 6G wireless systems, sensors, Edge AI, and IoT hardware."
 email: "korkut.tokgoz@sabanciuniv.edu"
-website: "https://fens.sabanciuniv.edu/en/faculty-members/detail/3672"
+website: "https://korkutkaantokgoz.com"
 linkedin: "https://www.linkedin.com/in/korkut-kaan-tokgoz-92b07633"
 googleScholar: "https://scholar.google.com/citations?user=NTSfdkcAAAAJ"
 weight: 1
