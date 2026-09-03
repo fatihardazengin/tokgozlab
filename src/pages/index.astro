@@ -103,7 +103,9 @@ const projects = activeProjects.slice(0, 3);
 
   <section class="border-y border-slate-100 bg-white py-10 sm:py-14">
     <div class="section-shell">
-      <p class="text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-400 sm:text-left">Research network</p>
+      <div class="text-center sm:text-left">
+        <span class="eyebrow">Research network</span>
+      </div>
       <div class="mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <div class="marquee-track flex w-max items-center gap-16">
           {partnerLoop.map((partner, index) => (
