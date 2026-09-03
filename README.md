@@ -63,20 +63,8 @@ Both options end the same way: once your change lands on the `main` branch, GitH
 ## Adding a new team member
 
 1. **Decide the person's role.** It must be exactly one of these values (spelling and capitalization matter):
-   `Principal Investigator`, `Professor`, `Associate Professor`, `Assistant Professor`, `Postdoc`, `Research Assistant`, `PhD Student`, `Master Student`, `Undergraduate`, `Alumni`.
-   The team page automatically groups people under these roles, so picking the right one determines which section they show up in:
-
-   | Role | Section on `/team` |
-   |---|---|
-   | `Principal Investigator` | Principal Investigator |
-   | `Professor`, `Associate Professor`, `Assistant Professor` | Faculty |
-   | `Postdoc`, `Research Assistant` | Postgraduate |
-   | `PhD Student` | Doctorate |
-   | `Master Student` | Graduate |
-   | `Undergraduate` | Undergraduate |
-   | `Alumni` | Alumni |
-
-   A section only appears once someone with that role exists — empty sections stay hidden.
+   `Principal Investigator`, `Postgraduate`, `Doctorate`, `Graduate`, `Undergraduate`, `Alumni`.
+   Each role has its own section on `/team`, in this order — a section only appears once someone with that role exists, so empty ones stay hidden.
 
 2. **Prepare a photo.** Square (1:1 aspect ratio, e.g. 800×800px), `.jpg` or `.png`. Save it into `src/assets/`, named after the person, e.g. `src/assets/jane-doe.jpg`. (Don't put it in `public/` — see [Photo and image guidelines](#photo-and-image-guidelines) for why.)
 
@@ -87,7 +75,7 @@ Both options end the same way: once your change lands on the `main` branch, GitH
    ```markdown
    ---
    name: "Jane Doe"
-   role: "PhD Student"
+   role: "Doctorate"
    title: ["Electronics Engineering"]
    avatar: "../../assets/jane-doe.jpg"
    bio: "One or two sentence summary of research focus, shown on the team grid card."

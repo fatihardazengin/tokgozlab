@@ -8,10 +8,9 @@ import { withBase } from '../config';
 const allMembers = (await getCollection('team')).sort((a, b) => a.data.weight - b.data.weight);
 const groups = [
   { title: 'Principal Investigator', roles: ['Principal Investigator'] },
-  { title: 'Faculty', roles: ['Professor', 'Associate Professor', 'Assistant Professor'] },
-  { title: 'Postgraduate', roles: ['Postdoc', 'Research Assistant'] },
-  { title: 'Doctorate', roles: ['PhD Student'] },
-  { title: 'Graduate', roles: ['Master Student'] },
+  { title: 'Postgraduate', roles: ['Postgraduate'] },
+  { title: 'Doctorate', roles: ['Doctorate'] },
+  { title: 'Graduate', roles: ['Graduate'] },
   { title: 'Undergraduate', roles: ['Undergraduate'] },
   { title: 'Alumni', roles: ['Alumni'] },
 ]
