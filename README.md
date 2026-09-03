@@ -64,7 +64,19 @@ Both options end the same way: once your change lands on the `main` branch, GitH
 
 1. **Decide the person's role.** It must be exactly one of these values (spelling and capitalization matter):
    `Principal Investigator`, `Professor`, `Associate Professor`, `Assistant Professor`, `Postdoc`, `Research Assistant`, `PhD Student`, `Master Student`, `Undergraduate`, `Alumni`.
-   The team page automatically groups people under these roles, so picking the right one determines which section they show up in.
+   The team page automatically groups people under these roles, so picking the right one determines which section they show up in:
+
+   | Role | Section on `/team` |
+   |---|---|
+   | `Principal Investigator` | Principal Investigator |
+   | `Professor`, `Associate Professor`, `Assistant Professor` | Faculty |
+   | `Postdoc`, `Research Assistant` | Postgraduate |
+   | `PhD Student` | Doctorate |
+   | `Master Student` | Graduate |
+   | `Undergraduate` | Undergraduate |
+   | `Alumni` | Alumni |
+
+   A section only appears once someone with that role exists — empty sections stay hidden.
 
 2. **Prepare a photo.** Square (1:1 aspect ratio, e.g. 800×800px), `.jpg` or `.png`. Save it into `src/assets/`, named after the person, e.g. `src/assets/jane-doe.jpg`. (Don't put it in `public/` — see [Photo and image guidelines](#photo-and-image-guidelines) for why.)
 
@@ -81,6 +93,7 @@ Both options end the same way: once your change lands on the `main` branch, GitH
    bio: "One or two sentence summary of research focus, shown on the team grid card."
    email: "jane.doe@sabanciuniv.edu"
    website: "https://example.com"
+   personalWebsite: "https://janedoe.com"
    linkedin: "https://linkedin.com/in/janedoe"
    github: "https://github.com/janedoe"
    twitter: "https://twitter.com/janedoe"
@@ -100,7 +113,8 @@ Both options end the same way: once your change lands on the `main` branch, GitH
    - `avatar` must point at the file you added in step 2, written as `../../assets/<filename>` — this exact relative path pattern, just swap the filename.
    - `bio` is the short blurb shown on the team grid (card view). Keep it to one or two sentences; the longer biography goes in the body text below the `---` line.
    - `weight` controls sort order **within** a role group — lower numbers appear first. Leave it out to default to 100 (i.e., "sort last"). This is how the PI (`weight: 1`) always appears first among Principal Investigators.
-   - Social fields (`email`, `website`, `linkedin`, `github`, `twitter`, `googleScholar`) each render as a small icon button on the person's card/profile — only the ones you provide show up.
+   - `website` is the person's official/institutional profile (e.g. a university faculty page) — shown as "University profile" on their profile page. `personalWebsite` is their own personal site — shown as "Website". Provide either, both, or neither.
+   - Social fields (`email`, `website`, `personalWebsite`, `linkedin`, `github`, `twitter`, `googleScholar`) each render as a small icon button on the person's card/profile — only the ones you provide show up.
 
 5. Save the file, then [publish your change](#publishing-your-changes). The new person appears on `/team` automatically — no other file needs editing.
 
