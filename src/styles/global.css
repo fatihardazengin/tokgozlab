@@ -197,6 +197,23 @@ button {
   box-shadow: 0 22px 45px -28px rgb(0 39 118 / 0.38);
 }
 
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
 ::-webkit-scrollbar {
   width: 9px;
 }

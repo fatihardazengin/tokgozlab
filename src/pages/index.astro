@@ -14,7 +14,15 @@ import {
 import Layout from '../layouts/Layout.astro';
 import { SITE, withBase } from '../config';
 import profileImage from '../assets/korkut-kaan-tokgoz.jpg';
+import tubitakLogo from '../assets/tubitak-logo.png';
+import turkishAerospaceLogo from '../assets/turkish-aerospace-logo.png';
 import { activeProjects } from '../data/projects';
+
+const partners = [
+  { name: 'TÜBİTAK', logo: tubitakLogo },
+  { name: 'Turkish Aerospace', logo: turkishAerospaceLogo },
+];
+const partnerLoop = [...partners, ...partners, ...partners].concat([...partners, ...partners, ...partners]);
 
 const researchAreas = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
 const papers = (await getCollection('publications'))
@@ -88,6 +96,19 @@ const projects = activeProjects.slice(0, 3);
         <div class="py-5 sm:px-7">
           <p class="text-2xl font-bold text-white">Device → System</p>
           <p class="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">End-to-end research scope</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-100 bg-white py-10 sm:py-14">
+    <div class="section-shell">
+      <p class="text-center text-xs font-bold uppercase tracking-[0.14em] text-slate-400 sm:text-left">Research network</p>
+      <div class="mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+        <div class="marquee-track flex w-max items-center gap-16">
+          {partnerLoop.map((partner, index) => (
+            <Image src={partner.logo} alt={partner.name} class="h-8 w-auto shrink-0 opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0 sm:h-10" loading={index < partners.length ? 'eager' : 'lazy'} />
+          ))}
         </div>
       </div>
     </div>
