@@ -50,22 +50,26 @@ const { name, role, title, avatar, email, website, personalWebsite, linkedin, go
       <Content />
     </div>
     <aside class="h-fit rounded-2xl border border-slate-200 bg-[#f5f8fa] p-6 lg:sticky lg:top-28">
-      <p class="text-xs font-bold uppercase tracking-[0.15em] text-[#007f80]">At a glance</p>
-      <dl class="mt-5 space-y-5 text-sm">
-        <div>
-          <dt class="font-bold text-[#071b26]">Affiliation</dt>
-          <dd class="mt-1 leading-6 text-slate-600">Electronics Engineering<br />Sabancı University</dd>
-        </div>
-        <div>
-          <dt class="font-bold text-[#071b26]">Doctorate</dt>
-          <dd class="mt-1 leading-6 text-slate-600">Physical Electronics<br />Tokyo Institute of Technology, 2018</dd>
-        </div>
-        <div>
-          <dt class="font-bold text-[#071b26]">Research span</dt>
-          <dd class="mt-1 leading-6 text-slate-600">CMOS circuits · sub-THz · 6G · Edge AI · IoT</dd>
-        </div>
-      </dl>
-      <a href={withBase('/publications')} class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#002776]">Selected publications <ArrowUpRight className="h-4 w-4" /></a>
+      {member.id === 'korkut-kaan-tokgoz' && (
+        <>
+          <p class="text-xs font-bold uppercase tracking-[0.15em] text-[#007f80]">At a glance</p>
+          <dl class="mt-5 space-y-5 text-sm">
+            <div>
+              <dt class="font-bold text-[#071b26]">Affiliation</dt>
+              <dd class="mt-1 leading-6 text-slate-600">Electronics Engineering<br />Sabancı University</dd>
+            </div>
+            <div>
+              <dt class="font-bold text-[#071b26]">Doctorate</dt>
+              <dd class="mt-1 leading-6 text-slate-600">Physical Electronics<br />Tokyo Institute of Technology, 2018</dd>
+            </div>
+            <div>
+              <dt class="font-bold text-[#071b26]">Research span</dt>
+              <dd class="mt-1 leading-6 text-slate-600">CMOS circuits · sub-THz · 6G · Edge AI · IoT</dd>
+            </div>
+          </dl>
+        </>
+      )}
+      <a href={withBase('/publications')} class={member.id === 'korkut-kaan-tokgoz' ? 'mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#002776]' : 'inline-flex items-center gap-2 text-sm font-bold text-[#002776]'}>Selected publications <ArrowUpRight className="h-4 w-4" /></a>
     </aside>
   </article>
 </Layout>
