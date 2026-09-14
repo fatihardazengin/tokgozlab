@@ -1,7 +1,7 @@
 ---
 name: "Sarp Yolcu"
 role: "Graduate"
-title: ["Electronics Engineering"]
+title: ["Master's Degree · Electronics Engineering"]
 avatar: "../../assets/sarp-yolcu.jpeg"
 bio: "I am an M.Sc. student in Electronics Engineering at Sabancı University. My research focuses on RF and sub-THz CMOS circuit design."
 email: "sarpyolcu@sabanciuniv.edu"

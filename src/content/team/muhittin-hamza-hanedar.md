@@ -1,7 +1,7 @@
 ---
 name: "Muhittin Hamza Hanedar"
 role: "Graduate"
-title: ["Electronics Engineering"]
+title: ["Master's Degree · Electronics Engineering"]
 avatar: "../../assets/muhittin-hamza-hanedar.png"
 bio: "M.Sc. student in Electronics Engineering at Sabancı University, focusing on analog/mixed-signal and RF IC design."
 email: "hamza.hanedar@sabanciuniv.edu"

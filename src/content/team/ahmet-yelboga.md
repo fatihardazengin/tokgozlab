@@ -1,7 +1,7 @@
 ---
 name: "Ahmet Yelboğa"
 role: "Graduate"
-title: ["Electronics Engineering"]
+title: ["Master's Degree · Electronics Engineering"]
 avatar: "../../assets/ahmet-yelboga.jpg"
 bio: "Ahmet Yelboğa received the B.S. degree in Electronics Engineering from Sabanci University in 2025, where he is currently pursuing the M.S. degree. His research interests include millimeter-wave and sub-terahertz CMOS circuits, focusing on energy-efficient designs such as modulators and non-coherent demodulators, as well as broadband and distributed CMOS circuits, including distributed amplifiers and distributed mixers."
 email: "ahmetyelboga@sabanciuniv.edu"

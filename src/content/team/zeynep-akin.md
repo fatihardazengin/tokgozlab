@@ -1,7 +1,7 @@
 ---
 name: "Zeynep Akın"
 role: "Graduate"
-title: ["Electronics Engineering"]
+title: ["Master's Degree · Electronics Engineering"]
 avatar: "../../assets/zeynep-akin.png"
 bio: "M.Sc. student in Electronics Engineering at Sabancı University, with research interests in analog/RF integrated circuit design."
 email: "zeynepakin@sabanciuniv.edu"

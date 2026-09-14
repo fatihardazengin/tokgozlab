@@ -1,7 +1,7 @@
 ---
 name: "Efe Korkmaz"
 role: "Graduate"
-title: ["Electronics Engineering"]
+title: ["Master's Degree · Electronics Engineering"]
 avatar: "../../assets/efe-korkmaz.jpg"
 bio: "Efe Korkmaz is an Electronics Engineering master's student at Sabanci University in Istanbul, working on SDRs and researching on ground penetrating radars along with synthetic aperture radars. His current research is SFCW ground penetrating radar aimed to locate earthquake victims under rubble."
 email: "ekorkmaz@sabanciuniv.edu"

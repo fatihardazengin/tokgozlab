@@ -1,7 +1,7 @@
 ---
 name: "Mustafa Canıtez"
 role: "Doctorate"
-title: ["Electronics Engineering"]
+title: ["PhD Candidate · Electronics Engineering"]
 avatar: "../../assets/mustafa-canitez.jpg"
 bio: "He started his PhD immediately after completing his B.Sc. in Electronics Engineering with a minor in Physics at Sabancı University in January 2026. In collaboration with imec, his research investigates signaling and interconnect approaches for next-generation digital circuits and computing architectures."
 email: "mustafa.canitez@sabanciuniv.edu"
