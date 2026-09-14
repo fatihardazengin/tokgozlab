@@ -7,6 +7,7 @@ bio: "Fatih Arda Zengin is an M.Sc. candidate in Manufacturing Engineering at Sa
 email: "fatihzengin@sabanciuniv.edu"
 personalWebsite: "https://fatihardazengin.com/"
 linkedin: "https://www.linkedin.com/in/fatihardazengin/"
+weight: 4
 ---
 
 Fatih Arda Zengin is an M.Sc. candidate in Manufacturing Engineering at Sabancı University with a background in Industrial Engineering and research interests at the intersection of artificial intelligence, embedded systems, energy technologies, and advanced manufacturing.
