@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { ArrowLeft, ArrowUpRight, ExternalLink, GraduationCap, Globe, Mail } from 'lucide-react';
 import Layout from '../../layouts/Layout.astro';
+import PublicationItem from '../../components/PublicationItem.astro';
 import { withBase } from '../../config';
 
 export async function getStaticPaths() {
@@ -15,6 +16,10 @@ export async function getStaticPaths() {
 const { member } = Astro.props;
 const { Content } = await render(member);
 const { name, role, title, avatar, email, website, personalWebsite, linkedin, googleScholar, bio } = member.data;
+
+const memberPublications = (await getCollection('publications'))
+  .filter((paper) => paper.data.authors.includes(name))
+  .sort((a, b) => b.data.year - a.data.year);
 ---
 
 <Layout title={name} description={bio}>
@@ -48,6 +53,15 @@ const { name, role, title, avatar, email, website, personalWebsite, linkedin, go
   <article class="section-shell grid gap-12 py-16 sm:py-24 lg:grid-cols-[1fr_19rem] lg:gap-20">
     <div class="prose max-w-3xl">
       <Content />
+
+      {memberPublications.length > 0 && (
+        <div class="not-prose mt-12">
+          <h2 class="text-2xl font-bold tracking-[-0.025em] text-[#071b26]">Publications</h2>
+          <div class="mt-6 space-y-5">
+            {memberPublications.map((entry) => <PublicationItem entry={entry} />)}
+          </div>
+        </div>
+      )}
     </div>
     <aside class="h-fit rounded-2xl border border-slate-200 bg-[#f5f8fa] p-6 lg:sticky lg:top-28">
       {member.id === 'korkut-kaan-tokgoz' && (
