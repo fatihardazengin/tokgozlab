@@ -112,6 +112,8 @@ Both options end the same way: once your change lands on the `main` branch, GitH
 
 There are two ways to do this. **Use the BibTeX method unless you have a specific reason not to** — it's faster and keeps every publication's metadata (authors, year, links) in one consistent file.
 
+**Author names must match exactly.** Each team member's profile page automatically lists their own publications, matched by comparing the publication's `authors` list against that person's `name` field — a plain string match, not a smart one. If you spell a name differently between `citations.bib`/a publication file and that person's `src/content/team/<slug>.md`, the match silently fails and the paper just won't show up on their page (the main `/publications` page is unaffected either way).
+
 ### Method A: BibTeX import (recommended)
 
 1. **Get a BibTeX entry for the paper.** Every major source can export one:
