@@ -281,6 +281,14 @@ const projects = activeProjects.slice(0, 3);
     if (!target || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     event.preventDefault();
 
+    // The page sets `html { scroll-behavior: smooth }` globally, which can hijack
+    // scripted scrollTo() calls (browser support for overriding it per-call via
+    // `behavior: 'instant'` is inconsistent). Disabling it on the root element for
+    // the duration of this animation, then restoring it, sidesteps that entirely.
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+
     const startY = window.scrollY;
     const endY = startY + target.getBoundingClientRect().top - 96;
     const duration = 1400;
@@ -289,8 +297,12 @@ const projects = activeProjects.slice(0, 3);
 
     function step(now: number) {
       const elapsed = Math.min((now - startTime) / duration, 1);
-      window.scrollTo({ top: startY + (endY - startY) * easeInOutQuad(elapsed), behavior: 'instant' });
-      if (elapsed < 1) requestAnimationFrame(step);
+      window.scrollTo(0, startY + (endY - startY) * easeInOutQuad(elapsed));
+      if (elapsed < 1) {
+        requestAnimationFrame(step);
+      } else {
+        root.style.scrollBehavior = previousScrollBehavior;
+      }
     }
 
     requestAnimationFrame(step);
