@@ -10,9 +10,11 @@ interface Props {
   description?: string;
   image?: string;
   robots?: string;
+  theme?: 'light' | 'dark';
 }
 
-const { title, description = SITE.description, robots = 'index, follow' } = Astro.props;
+const { title, description = SITE.description, robots = 'index, follow', theme = 'light' } = Astro.props;
+const surfaceColor = theme === 'dark' ? '#031522' : '#ffffff';
 const pageTitle = title && title !== 'Home' ? `${title} · ${SITE.labName}` : `${SITE.labName} · ${SITE.university}`;
 const siteBase = Astro.site ?? new URL(Astro.url.origin);
 const canonicalUrl = new URL(Astro.url.pathname, siteBase);
@@ -91,7 +93,7 @@ const organizationSchema = {
 ---
 
 <!doctype html>
-<html lang={LOCALE.lang}>
+<html lang={LOCALE.lang} style={`background-color:${surfaceColor}`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -120,7 +122,7 @@ const organizationSchema = {
 
     <slot name="head" />
   </head>
-  <body class="min-h-screen bg-white text-slate-800">
+  <body class="min-h-screen text-slate-800" style={`background-color:${surfaceColor}`}>
     <Header />
     <main id="main-content" class="min-h-[60vh]" data-pagefind-body>
       <slot />
