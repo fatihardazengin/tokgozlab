@@ -44,7 +44,7 @@ const projects = activeProjects.slice(0, 3);
 ---
 
 <Layout title="Home" theme="dark">
-  <section class="relative min-h-[calc(100svh-76px)] overflow-hidden bg-[#031522] text-white">
+  <section data-surface="dark" class="relative min-h-[calc(100svh-76px)] overflow-hidden bg-[#031522] text-white">
     <div class="absolute inset-0">
       <Image
         src={SITE.hero.image}
@@ -110,7 +110,7 @@ const projects = activeProjects.slice(0, 3);
   </section>
 
   {SHOW_RESEARCH_NETWORK && (
-    <section class="border-y border-slate-100 bg-white py-10 sm:py-14">
+    <section data-surface="light" class="border-y border-slate-100 bg-white py-10 sm:py-14">
       <div class="section-shell">
         <div class="text-center sm:text-left">
           <span class="eyebrow">Research network</span>
@@ -126,7 +126,7 @@ const projects = activeProjects.slice(0, 3);
     </section>
   )}
 
-  <section id="overview" class="bg-white py-20 sm:py-28">
+  <section id="overview" data-surface="light" class="bg-white py-20 sm:py-28">
     <div class="section-shell">
       <div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
         <div>
@@ -165,7 +165,7 @@ const projects = activeProjects.slice(0, 3);
     </div>
   </section>
 
-  <section class="overflow-hidden bg-[#f3f7fa] py-20 sm:py-28">
+  <section data-surface="light" class="overflow-hidden bg-[#f3f7fa] py-20 sm:py-28">
     <div class="section-shell">
       <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <div class="max-w-2xl">
@@ -191,7 +191,7 @@ const projects = activeProjects.slice(0, 3);
     </div>
   </section>
 
-  <section class="bg-white py-20 sm:py-28">
+  <section data-surface="light" class="bg-white py-20 sm:py-28">
     <div class="section-shell">
       <div class="flex items-end justify-between gap-6">
         <div>
@@ -230,7 +230,7 @@ const projects = activeProjects.slice(0, 3);
     </div>
   </section>
 
-  <section class="bg-[#061a2b] py-20 text-white sm:py-28">
+  <section data-surface="dark" class="bg-[#061a2b] py-20 text-white sm:py-28">
     <div class="section-shell grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
       <div class="relative mx-auto max-w-sm lg:mx-0">
         <div class="absolute -inset-4 rounded-[2rem] border border-[#5de4df]/20"></div>
@@ -259,7 +259,7 @@ const projects = activeProjects.slice(0, 3);
     </div>
   </section>
 
-  <section class="py-20 sm:py-24">
+  <section data-surface="light" class="bg-white py-20 sm:py-24">
     <div class="section-shell overflow-hidden rounded-[2rem] bg-[#002776] px-6 py-12 text-white sm:px-12 lg:flex lg:items-center lg:justify-between lg:gap-12 lg:px-16">
       <div class="max-w-2xl">
         <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#75e3de]">Join the lab</p>

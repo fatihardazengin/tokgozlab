@@ -29,18 +29,33 @@
   color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+
+  /* Browser/page chrome surface: drives html/body background (iOS safe-area
+     and overscroll fallback) and <meta name="theme-color">. Section content
+     always sets its own explicit surface + text colors — this pair only
+     covers the areas outside actual content. */
+  --page-chrome-bg: #ffffff;
+  --page-chrome-fg: #071b26;
+}
+
+/* Set server-side via Layout's `theme` prop (html[data-theme]) and kept in
+   sync with the active section client-side — see Layout.astro. */
+html[data-theme='dark'] {
+  --page-chrome-bg: #031522; /* same navy as the homepage hero */
+  --page-chrome-fg: #ffffff;
 }
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
+  background: var(--page-chrome-bg);
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background: #fff;
-  color: #1e293b;
+  background: var(--page-chrome-bg);
+  color: var(--page-chrome-fg);
   -webkit-font-smoothing: antialiased;
 }
 

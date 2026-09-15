@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { title, description = SITE.description, robots = 'index, follow', theme = 'light' } = Astro.props;
-const surfaceColor = theme === 'dark' ? '#031522' : '#ffffff';
+const chromeColor = theme === 'dark' ? '#031522' : '#ffffff';
 const pageTitle = title && title !== 'Home' ? `${title} · ${SITE.labName}` : `${SITE.labName} · ${SITE.university}`;
 const siteBase = Astro.site ?? new URL(Astro.url.origin);
 const canonicalUrl = new URL(Astro.url.pathname, siteBase);
@@ -93,13 +93,13 @@ const organizationSchema = {
 ---
 
 <!doctype html>
-<html lang={LOCALE.lang} style={`background-color:${surfaceColor}`}>
+<html lang={LOCALE.lang} data-theme={theme}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
-    <meta name="theme-color" content="#002776" />
+    <meta name="theme-color" content={chromeColor} />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon-32.png')} />
@@ -122,13 +122,13 @@ const organizationSchema = {
 
     <slot name="head" />
   </head>
-  <body class="min-h-screen text-slate-800" style={`background-color:${surfaceColor}`}>
+  <body class="min-h-screen">
     <Header />
     <main id="main-content" class="min-h-[60vh]" data-pagefind-body>
       <slot />
     </main>
 
-    <footer class="relative overflow-hidden bg-[#061a2b] text-slate-300">
+    <footer data-surface="dark" class="relative overflow-hidden bg-[#061a2b] text-slate-300">
       <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#5de4df] to-transparent opacity-60"></div>
       <div class="mx-auto grid max-w-[90rem] gap-12 px-4 py-14 sm:px-6 md:grid-cols-[1.3fr_0.7fr_1fr] lg:px-10 lg:py-18">
         <div class="max-w-md">
@@ -178,5 +178,45 @@ const organizationSchema = {
         </div>
       </div>
     </footer>
+
+    <script>
+      // Keeps the browser chrome (iOS safe-area/overscroll background and
+      // <meta name="theme-color">) in sync with whichever [data-surface]
+      // section is currently under the center of the viewport, so a light
+      // page can still contain a dark footer/hero (and vice versa) without
+      // the chrome clashing with either. See global.css for the --page-chrome-*
+      // variables this reads back after toggling html[data-theme].
+      const root = document.documentElement;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      const surfaces = Array.from(document.querySelectorAll<HTMLElement>('[data-surface]'));
+      const baseTheme = root.dataset.theme === 'dark' ? 'dark' : 'light';
+
+      if (surfaces.length) {
+        let current = baseTheme;
+
+        const syncMetaColor = () => {
+          if (!meta) return;
+          const bg = getComputedStyle(root).getPropertyValue('--page-chrome-bg').trim();
+          if (bg) meta.setAttribute('content', bg);
+        };
+
+        const applyTheme = (theme: string) => {
+          if (theme === current) return;
+          current = theme;
+          root.dataset.theme = theme;
+          syncMetaColor();
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const active = entries.find((entry) => entry.isIntersecting);
+            applyTheme(active ? (active.target as HTMLElement).dataset.surface ?? baseTheme : baseTheme);
+          },
+          { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
+        );
+
+        surfaces.forEach((section) => observer.observe(section));
+      }
+    </script>
   </body>
 </html>
