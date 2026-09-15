@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import { ArrowUpRight, Mail, MapPin } from 'lucide-react';
@@ -17,7 +18,6 @@ const canonicalUrl = new URL(Astro.url.pathname, siteBase);
 const homeLink = withBase('/');
 const basePrefix = import.meta.env.BASE_URL;
 const baseNoSlash = basePrefix.replace(/\/$/, '');
-const isHomePage = Astro.url.pathname === basePrefix || Astro.url.pathname === baseNoSlash;
 const pathWithoutBase = Astro.url.pathname.startsWith(basePrefix)
   ? Astro.url.pathname.slice(basePrefix.length)
   : Astro.url.pathname.startsWith(baseNoSlash)
@@ -30,6 +30,10 @@ const topLevel = ogSlug.split('/')[0];
 const finalOgSlug = supportedTopLevel.includes(topLevel) ? ogSlug : 'index';
 const ogImage = new URL(withBase(`/og/${finalOgSlug}.png`), siteBase);
 
+const researchAreas = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
+const knowsAbout = researchAreas.map((area) => area.data.title);
+const principalInvestigator = (await getCollection('team')).find((member) => member.id === 'korkut-kaan-tokgoz');
+
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -40,6 +44,7 @@ const organizationSchema = {
       url: siteBase.href,
       logo: new URL(SITE.logo, siteBase).href,
       description: SITE.description,
+      knowsAbout,
       parentOrganization: {
         '@type': 'CollegeOrUniversity',
         name: 'Sabancı University',
@@ -61,7 +66,9 @@ const organizationSchema = {
       '@id': `${siteBase.href}#principal-investigator`,
       name: SITE.profile.name,
       jobTitle: SITE.profile.role,
+      description: principalInvestigator?.data.bio,
       affiliation: { '@id': `${siteBase.href}#lab` },
+      knowsAbout,
       sameAs: [
         SITE.profile.officialUrl,
         SITE.profile.scholarUrl,
@@ -98,7 +105,7 @@ const organizationSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    {isHomePage && <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />}
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
   </head>
   <body class="min-h-screen bg-white text-slate-800">
     <Header />
