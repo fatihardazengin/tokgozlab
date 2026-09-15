@@ -9,6 +9,7 @@ website: "https://fens.sabanciuniv.edu/en/faculty-members/detail/3672"
 personalWebsite: "https://korkutkaantokgoz.com"
 linkedin: "https://www.linkedin.com/in/korkut-kaan-tokgoz-92b07633"
 googleScholar: "https://scholar.google.com/citations?user=NTSfdkcAAAAJ"
+orcid: "https://orcid.org/0000-0002-5724-6349"
 weight: 1
 ---
 

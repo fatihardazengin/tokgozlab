@@ -15,14 +15,49 @@ export async function getStaticPaths() {
 
 const { member } = Astro.props;
 const { Content } = await render(member);
-const { name, role, title, avatar, email, website, personalWebsite, linkedin, googleScholar, bio } = member.data;
+const { name, role, title, avatar, email, website, personalWebsite, linkedin, googleScholar, github, twitter, orcid, bio } =
+  member.data;
 
 const memberPublications = (await getCollection('publications'))
   .filter((paper) => paper.data.authors.includes(name))
   .sort((a, b) => b.data.year - a.data.year);
+
+// --- Person JSON-LD ---
+// Korkut Kaan Tokgöz already has a full Person entity in Layout.astro's
+// sitewide graph (reused on every page, including this one). Emitting a
+// second one here — even with overlapping data like jobTitle/description —
+// would risk conflicting values under the same @id, so his page reuses that
+// existing entity instead of stacking a duplicate.
+const isPrincipalInvestigator = member.id === 'korkut-kaan-tokgoz';
+const isAlumni = role === 'Alumni';
+const siteBase = Astro.site ?? new URL(Astro.url.origin);
+const canonicalHref = new URL(Astro.url.pathname, siteBase).href;
+const labId = `${siteBase.href}#lab`;
+const jobTitle = title?.length ? title.join(' · ') : !isAlumni ? role : undefined;
+const sameAs = [website, personalWebsite, googleScholar, linkedin, github, twitter, orcid].filter(
+  (url): url is string => Boolean(url),
+);
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${canonicalHref}#person`,
+  name,
+  url: canonicalHref,
+  ...(bio ? { description: bio } : {}),
+  ...(jobTitle ? { jobTitle } : {}),
+  ...(isAlumni ? { alumniOf: { '@id': labId } } : { affiliation: { '@id': labId } }),
+  ...(sameAs.length ? { sameAs } : {}),
+};
 ---
 
 <Layout title={name} description={bio}>
+  {!isPrincipalInvestigator && (
+    <Fragment slot="head">
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    </Fragment>
+  )}
+
   <header class="relative overflow-hidden bg-[#061a2b] text-white">
     <div class="signal-grid absolute inset-0 opacity-50"></div>
     <div class="section-shell relative py-12 sm:py-18">
@@ -43,6 +78,7 @@ const memberPublications = (await getCollection('publications'))
             {website && <a href={website} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/10"><ExternalLink className="h-4 w-4" /> University profile</a>}
             {personalWebsite && <a href={personalWebsite} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/10"><Globe className="h-4 w-4" /> Website</a>}
             {googleScholar && <a href={googleScholar} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/10"><GraduationCap className="h-4 w-4" /> Scholar</a>}
+            {orcid && <a href={orcid} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/10"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9.5" /><text x="12" y="15.5" text-anchor="middle" font-size="8.5" font-weight="700" font-family="sans-serif" stroke="none" fill="currentColor">iD</text></svg> ORCID</a>}
             {linkedin && <a href={linkedin} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/10"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.5 8.5H3V21h3.5V8.5ZM4.75 3A2.05 2.05 0 1 0 4.8 7.1 2.05 2.05 0 0 0 4.75 3ZM21 14.1c0-3.76-2-5.51-4.68-5.51a4.04 4.04 0 0 0-3.67 2.02V8.5H9.14V21h3.51v-6.19c0-1.63.31-3.21 2.33-3.21 1.99 0 2.02 1.86 2.02 3.32V21h3.5l.5-6.9Z" /></svg> LinkedIn</a>}
           </div>
         </div>

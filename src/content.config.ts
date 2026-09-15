@@ -57,6 +57,7 @@ const team = defineCollection({
       github: z.string().optional(),
       twitter: z.string().optional(),
       googleScholar: z.string().optional(),
+      orcid: z.string().optional(),
       weight: z.number().default(100),
     }),
 });
