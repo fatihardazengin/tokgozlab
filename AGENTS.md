@@ -8,7 +8,7 @@ The public website for **Tokgöz Lab**, a research group led by **Korkut Kaan To
 
 - Live URL: `https://tokgozlab.com`
 - This is a **real, in-production lab site**, not a template demo. Content (team bios, publications, projects) is genuine and should stay accurate — don't reintroduce placeholder/sample data.
-- Currently the team has **one member** (the PI). The team page groups by role and is designed to scale as students join; don't assume a large roster.
+- The team has grown past the PI to ~20 members (Postgraduate/Doctorate/Graduate/Undergraduate/Alumni) via a Google Form intake collected from the group; expect this to keep growing over time. **Do not assume single-member state** in copy, layout, or role-grouping logic. New submissions get turned into `src/content/team/<slug>.md` files by hand (name, role, title, a square photo added to `src/assets/`, bio) — there is no automated form-to-content pipeline.
 
 ## Origin and history
 
@@ -79,25 +79,35 @@ Images referenced in frontmatter (e.g. `avatar: "../../assets/x.jpg"`) must live
 - `index.astro` — homepage: hero, featured research areas, top 3 of `activeProjects` (see below), featured publications.
 - `research/index.astro`, `research/[slug].astro` — research area listing + detail (Markdown body rendered via `render()`).
 - `projects.astro` — full active/completed project lists. Imports `activeProjects`/`completedProjects` from `src/data/projects.ts` — a plain TS array, **not** a content collection. Edit that data file, not this page, to change project status/dates.
-- `publications.astro` — full publication list, filtered to `type === 'paper'`, grouped/sorted by year.
-- `team.astro`, `team/[...slug].astro` — team listing (grouped by role) + individual profile pages.
+- `publications.astro` — full publication list, filtered to `type === 'paper'`, grouped/sorted by year. Each title links to that paper's own detail page (below); the DOI/Publisher button stays a separate external link.
+- `publications/[...slug].astro` (added 2026-09) — one static detail page per publication (`type === 'paper'` only), slug = `entry.id`. Shows title/authors/venue/abstract/links, plus **Google Scholar / Highwire Press citation meta tags** (`citation_title`, one `citation_author` per author, `citation_publication_date`, `citation_doi`, and `citation_journal_title` *or* `citation_conference_title` — only emitted when the venue string safely matches a journal/conference keyword heuristic, otherwise omitted rather than guessed) and a `ScholarlyArticle` JSON-LD block. Never invents `citation_pdf_url` from a DOI/publisher link — only ever from a link actually hosted on this site.
+- `team.astro`, `team/[...slug].astro` — team listing (grouped by role) + individual profile pages. Each profile page also auto-lists that person's own publications via a plain-string match of `name` against every publication's `authors[]` (see the "Add a team member" recipe below for the gotcha).
 - `join.astro` — "Opportunities" page, static content describing how to apply (mailto link + external university links).
-- `search.astro` — Pagefind UI mount point.
+- `search.astro` — Pagefind UI mount point. Sends `robots="noindex, follow"` to `Layout` (see SEO section) and is deliberately excluded from `sitemap.xml` — it has no unique indexable content of its own.
 - `og/[...slug].png.ts` — generates one OG image per static page + per publication/team/research slug at build time.
-- `404.astro` — branded not-found page; Astro emits it as `dist/404.html`, which GitHub Pages serves automatically for any unmatched path under `/tokgozlab/`.
+- `404.astro` — branded not-found page; Astro emits it as `dist/404.html`, which GitHub Pages serves automatically for any unmatched path (site is at the domain root now, not under `/tokgozlab/` — see Deployment section).
 
 ## Build-time scripts (`scripts/`, plain Node/ESM, no Astro runtime)
 
 - `import-bibtex.js` — see above.
-- `generate-sitemap.js` (added 2026-09) — hand-written, dependency-free sitemap generator. Lists the static routes plus every slug under `src/content/research/` and `src/content/team/`, writes `dist/sitemap.xml`. Chosen over the `@astrojs/sitemap` integration to avoid adding a dependency/lockfile change for a ~12-URL site. **If the site grows a lot of dynamic routes (e.g. publications get their own pages), prefer switching to `npx astro add sitemap` instead of extending this script by hand.** Its `SITE_URL` constant must be kept in sync with `astro.config.mjs`'s `site`+`base`.
+- `generate-sitemap.js` (added 2026-09) — hand-written, dependency-free sitemap generator. Lists the static routes plus every slug under `src/content/research/`, `src/content/team/`, and every `type: "paper"` slug under `src/content/publications/` (excluding `search`), writes `dist/sitemap.xml`. Chosen over the `@astrojs/sitemap` integration to avoid adding a dependency/lockfile change for a small site. Its `SITE_URL` constant must be kept in sync with `astro.config.mjs`'s `site`. **Gotcha already hit once:** this script reads raw filenames off disk, but Astro's content-collection glob loader lowercases the filename to derive each entry's real `id`/route (e.g. `2016-Tokgöz-....md` → route `2016-tokgöz-...`). The slug helpers here `.toLowerCase()` the filename-derived slug to match — if you add a new slug-deriving helper to this file, do the same, or mixed-case source filenames will produce sitemap URLs that 404.
 
 `package.json`'s `build` script chains these: `import-bibtex → astro build → generate-sitemap → pagefind index`.
+
+## SEO / structured data / AI-crawler discoverability (added 2026-09)
+
+- `src/layouts/Layout.astro` renders one `@graph` JSON-LD block **on every page** (not homepage-only): `WebSite` (`@id` `#website`, `publisher` pointing at the lab) → `ResearchOrganization` (`@id` `#lab`, `knowsAbout` pulled live from the `research` collection's titles) → `Person` (`@id` `#principal-investigator`, `description` pulled from Korkut's own `team` entry `bio`, same `knowsAbout`). If you add a new page type that has its own structured data (like publications' `ScholarlyArticle`, below), add it via the `<slot name="head" />` in `Layout.astro` + `<Fragment slot="head">…</Fragment>` in the page — **do not** touch or duplicate this existing graph to do it.
+- `Layout.astro` takes an optional `robots` prop, default `"index, follow"`. `search.astro` is the only page currently overriding it (`"noindex, follow"`) — follow that pattern (prop, not a one-off `<meta>` hack) for any future non-indexable page.
+- `publications/[...slug].astro` uses that same `head` slot for its citation meta tags + `ScholarlyArticle` JSON-LD (see Pages section above for what's emitted and the "don't invent metadata" rule it follows).
+- `public/llms.txt` — a plain-language, non-HTML summary of the lab/PI/key pages for AI assistants that support the emerging `llms.txt` convention. Keep it in sync by hand if the lab's core description or key page list changes; nothing regenerates it automatically.
+- `robots.txt` is a blanket `Allow: /` for all user agents (including AI crawlers — GPTBot, ClaudeBot, PerplexityBot, etc.) — that's deliberate, don't narrow it without being asked.
 
 ## Known gaps / things intentionally left alone
 
 - `public/_headers` is a Netlify-style security-headers file. **GitHub Pages does not read it** — it's currently inert. Left in place in case the site is ever moved to Netlify/Cloudflare Pages; don't assume its CSP/HSTS headers are actually being served.
 - No i18n despite `SITE.i18n` existing in config — it's a stub (`enabled: false`) from the template, not a real feature.
 - `package.json` `homepage` field still points at the GitHub repo, not the live site — left alone deliberately as out of scope of prior cleanup.
+- The homepage's "Research network" partner-logo marquee (`index.astro`, TÜBİTAK/Turkish Aerospace logos in `src/assets/`) is fully built but hidden behind `const SHOW_RESEARCH_NETWORK = false` — flip it to `true` to bring it back rather than re-adding the section from scratch.
 
 ## Working conventions observed in this repo
 
@@ -105,4 +115,6 @@ Images referenced in frontmatter (e.g. `avatar: "../../assets/x.jpg"`) must live
 - Don't push to remote unless explicitly asked — recent work was committed locally and left for the repo owner to push.
 - No comments explaining *what* code does; comments only where there's a non-obvious constraint (e.g. the `withBase()` doc comment, the "must match astro.config.mjs" note in `generate-sitemap.js`).
 - Prefer a small hand-written script over adding a new npm dependency when the site's scale doesn't warrant it (see the sitemap decision above) — but don't over-apply this; use real dependencies for anything nontrivial (Pagefind, Satori/resvg for OG images were kept as real deps).
-- Before trusting an AI agent's assumption about installed tooling: some sandboxed environments running this agent do **not** have `node`/`npm` on `PATH` even though `node_modules/` is already populated (installed from the user's real terminal). If shell commands report `node: command not found`, don't conclude the project has no Node setup — ask the user to run `npm install` / `npm run build` themselves and report back, rather than silently skipping verification or fabricating a result.
+- Before trusting an AI agent's assumption about installed tooling: some sandboxed environments running this agent do **not** have `node`/`npm` on `PATH` even though `node_modules/` is already populated (installed from the user's real terminal). If Node isn't available, install it yourself via `nvm` (`curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash`, then `nvm install --lts`) rather than asking the user to verify things manually — but note the sandbox's per-command shell doesn't persist PATH changes from `~/.zshrc`/`~/.zshenv` reliably, so every single Bash call that needs `node`/`npm`/`npx` must start with `source "$HOME/.nvm/nvm.sh"` first, every time — it will not "stick" across tool calls.
+- This sandbox generally **cannot `git push`** (no credentials — `could not read Username for 'https://github.com'`). Something in the user's own environment (observed behavior consistent with a VS Code auto-sync) picks up local commits and pushes them on its own shortly after, but that's outside this agent's control and not guaranteed to be instant. After committing, tell the user the commit is local and ask them to sync/push from their own editor — never claim a push succeeded that this agent didn't actually perform, and don't assume a commit is live until you've re-fetched and confirmed `origin/main` moved.
+- This sandbox has an intermittent, reproducible quirk reaching `https://tokgozlab.com` over HTTPS by hostname — TLS handshake resets (`Recv failure: Connection reset by peer`) even when the site is fully healthy. Before concluding the live site is down, bypass DNS/SNI and hit one of GitHub Pages' 4 IPs directly with a `Host` header, e.g. `curl -sk -H "Host: tokgozlab.com" https://185.199.108.153/` (also try `.109`/`.110`/`.111.153` — historically 3 of the 4 work fine even when the hostname-based connection from this sandbox doesn't). Also cross-check `https://api.github.com/repos/<owner>/<repo>/actions/runs` for the Pages workflow's latest `conclusion` before telling the user something is broken — a `success` there means the build/deploy itself is fine and any remaining symptom is network-path-specific, not a code regression.
