@@ -210,6 +210,24 @@ button {
   animation: marquee 28s linear infinite;
 }
 
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0.9rem);
+    opacity: 0;
+  }
+}
+
+.scroll-cue-dot {
+  animation: scroll-cue 1.8s ease-in-out infinite;
+}
+
 .marquee-track:hover {
   animation-play-state: paused;
 }

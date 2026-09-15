@@ -83,6 +83,12 @@ const projects = activeProjects.slice(0, 3);
           </a>
         </div>
       </div>
+
+      <a href="#overview" class="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/60 transition hover:text-white sm:flex" aria-label="Scroll to explore the site">
+        <span class="flex h-9 w-6 items-start justify-center rounded-full border-2 border-current p-1">
+          <span class="scroll-cue-dot h-1.5 w-1.5 rounded-full bg-current"></span>
+        </span>
+      </a>
     </div>
 
     <div class="relative z-10 border-t border-white/10 bg-[#031522]/70 backdrop-blur-md">
@@ -120,7 +126,7 @@ const projects = activeProjects.slice(0, 3);
     </section>
   )}
 
-  <section class="py-20 sm:py-28">
+  <section id="overview" class="py-20 sm:py-28">
     <div class="section-shell">
       <div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
         <div>
