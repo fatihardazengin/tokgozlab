@@ -9,9 +9,10 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  robots?: string;
 }
 
-const { title, description = SITE.description } = Astro.props;
+const { title, description = SITE.description, robots = 'index, follow' } = Astro.props;
 const pageTitle = title && title !== 'Home' ? `${title} · ${SITE.labName}` : `${SITE.labName} · ${SITE.university}`;
 const siteBase = Astro.site ?? new URL(Astro.url.origin);
 const canonicalUrl = new URL(Astro.url.pathname, siteBase);
@@ -38,9 +39,18 @@ const organizationSchema = {
   '@context': 'https://schema.org',
   '@graph': [
     {
+      '@type': 'WebSite',
+      '@id': `${siteBase.href}#website`,
+      url: siteBase.href,
+      name: SITE.labName,
+      alternateName: ['Tokgoz Lab', 'tokgozlab.com'],
+      publisher: { '@id': `${siteBase.href}#lab` },
+    },
+    {
       '@type': 'ResearchOrganization',
       '@id': `${siteBase.href}#lab`,
       name: SITE.labName,
+      alternateName: 'Tokgoz Lab',
       url: siteBase.href,
       logo: new URL(SITE.logo, siteBase).href,
       description: SITE.description,
@@ -86,6 +96,7 @@ const organizationSchema = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
     <meta name="theme-color" content="#002776" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />

@@ -14,7 +14,9 @@ const slugsIn = (dir) =>
     .filter((file) => /\.mdx?$/.test(file))
     .map((file) => file.replace(/\.mdx?$/, ''));
 
-const staticRoutes = ['', 'research', 'projects', 'publications', 'team', 'join', 'search'];
+// 'search' is deliberately excluded — it's noindex'd (see src/pages/search.astro)
+// and has no unique indexable content of its own.
+const staticRoutes = ['', 'research', 'projects', 'publications', 'team', 'join'];
 const researchRoutes = slugsIn(RESEARCH_DIR).map((slug) => `research/${slug}`);
 const teamRoutes = slugsIn(TEAM_DIR).map((slug) => `team/${slug}`);
 
