@@ -84,7 +84,7 @@ const projects = activeProjects.slice(0, 3);
         </div>
       </div>
 
-      <a href="#overview" class="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/60 transition hover:text-white sm:flex" aria-label="Scroll to explore the site">
+      <a href="#overview" id="scroll-cue" class="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/60 transition hover:text-white sm:flex" aria-label="Scroll to explore the site">
         <span class="flex h-9 w-6 items-start justify-center rounded-full border-2 border-current p-1">
           <span class="scroll-cue-dot h-1.5 w-1.5 rounded-full bg-current"></span>
         </span>
@@ -272,3 +272,27 @@ const projects = activeProjects.slice(0, 3);
     </div>
   </section>
 </Layout>
+
+<script>
+  const scrollCue = document.getElementById('scroll-cue');
+  const target = document.getElementById('overview');
+
+  scrollCue?.addEventListener('click', (event) => {
+    if (!target || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    event.preventDefault();
+
+    const startY = window.scrollY;
+    const endY = startY + target.getBoundingClientRect().top - 96;
+    const duration = 1400;
+    const startTime = performance.now();
+    const easeInOutQuad = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+
+    function step(now: number) {
+      const elapsed = Math.min((now - startTime) / duration, 1);
+      window.scrollTo(0, startY + (endY - startY) * easeInOutQuad(elapsed));
+      if (elapsed < 1) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  });
+</script>
