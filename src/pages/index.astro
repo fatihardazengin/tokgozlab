@@ -289,7 +289,7 @@ const projects = activeProjects.slice(0, 3);
 
     function step(now: number) {
       const elapsed = Math.min((now - startTime) / duration, 1);
-      window.scrollTo(0, startY + (endY - startY) * easeInOutQuad(elapsed));
+      window.scrollTo({ top: startY + (endY - startY) * easeInOutQuad(elapsed), behavior: 'instant' });
       if (elapsed < 1) requestAnimationFrame(step);
     }
 
