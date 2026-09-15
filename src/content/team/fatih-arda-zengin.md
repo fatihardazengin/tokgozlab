@@ -7,6 +7,7 @@ bio: "Fatih Arda Zengin is an M.Sc. candidate in Manufacturing Engineering at Sa
 email: "fatihzengin@sabanciuniv.edu"
 personalWebsite: "https://fatihardazengin.com/"
 linkedin: "https://www.linkedin.com/in/fatihardazengin/"
+orcid: "https://orcid.org/0000-0003-3015-7343"
 weight: 4
 ---
 
