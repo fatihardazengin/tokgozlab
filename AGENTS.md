@@ -6,7 +6,7 @@ Context for AI coding agents (Claude Code, Copilot, Cursor, etc.) working on thi
 
 The public website for **Tokgöz Lab**, a research group led by **Korkut Kaan Tokgöz** in the Electronics Engineering department at **Sabancı University** (Istanbul). The lab works on energy-efficient millimeter-wave and sub-terahertz CMOS circuits, integrated systems, 6G wireless, sensors, Edge AI, and IoT hardware.
 
-- Live URL: `https://fatihardazengin.github.io/tokgozlab`
+- Live URL: `https://tokgozlab.com`
 - This is a **real, in-production lab site**, not a template demo. Content (team bios, publications, projects) is genuine and should stay accurate — don't reintroduce placeholder/sample data.
 - Currently the team has **one member** (the PI). The team page groups by role and is designed to scale as students join; don't assume a large roster.
 
@@ -27,25 +27,20 @@ This started from the open-source **"Scholar-Lite"** Astro template (`fjd2004711
 - **Satori + resvg** generate per-page OG images at build time (`src/pages/og/[...slug].png.ts`), using the local `Inter` woff fonts in `public/fonts/`.
 - Content is Markdown with typed frontmatter via Astro's content collections (`src/content.config.ts`, Zod schemas).
 
-## Deployment: GitHub Pages under a subpath — the one thing to never break
+## Deployment: GitHub Pages behind a custom domain
 
-This site deploys via `.github/workflows/pages.yml` to GitHub Pages at a **project subpath**, not a custom domain:
+This site deploys via `.github/workflows/pages.yml` to GitHub Pages, served at the custom domain root (no project subpath):
 
 ```js
 // astro.config.mjs
-site: 'https://fatihardazengin.github.io',
-base: '/tokgozlab',
+site: 'https://tokgozlab.com',
 ```
 
-Because of `base`, **every internal link and every reference to a `public/` asset must go through the `withBase()` helper** in `src/config.ts`:
+`public/CNAME` (containing `tokgozlab.com`) is what tells GitHub Pages to serve the custom domain instead of `fatihardazengin.github.io/tokgozlab` — it's a static file copied verbatim into `dist/` on build, not something Astro/Vite processes. **Don't delete it**, and don't rename it — GitHub Pages looks for that exact filename at the domain root.
 
-```ts
-export const withBase = (path: string) => { ... } // '/research' -> '/tokgozlab/research'
-```
+Since there's no `base` path, a literal `href="/research"` or `src="/favicon.svg"` resolves correctly today. The codebase still routes every internal link and `public/` asset reference through the `withBase()` helper in `src/config.ts` — historically required when the site lived under `/tokgozlab`, now effectively a no-op (`base` is unset). It's left in place rather than stripped from every call site; keep using it for new internal links for consistency, but don't worry if you see a plain absolute path here or there — it won't break anything at the current root deployment.
 
-A literal `href="/research"` or `src="/favicon.svg"` will 404 in production (it resolves to the domain root, not `/tokgozlab/...`) even though it works fine in `astro dev`. This exact class of bug was the subject of a full-repo fix (commit `5f4e021`, "Sa") that swept every hardcoded absolute path to `withBase()`. **When adding any new internal `<a href>`, `<img src>`, canonical URL, or OG URL, wrap the path in `withBase()`.** External links (to `sabanciuniv.edu`, Google Scholar, etc.) are fine as plain absolute URLs.
-
-If the site ever moves to a custom domain or a different repo name, both `site` and `base` in `astro.config.mjs` need to change together, and `scripts/generate-sitemap.js`'s hardcoded `SITE_URL` and `public/robots.txt`'s `Sitemap:` line need to be updated to match (see below — they are not derived automatically from `astro.config.mjs`).
+If the site ever moves again (different domain, or back under a subpath), update **all** of: `site` (and `base`, if reintroduced) in `astro.config.mjs`, `SITE_URL` in `scripts/generate-sitemap.js`, the `Sitemap:` line in `public/robots.txt`, and `public/CNAME` — none of these are derived from each other automatically.
 
 ## Content model
 

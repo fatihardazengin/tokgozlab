@@ -4,7 +4,7 @@
 
 Sabancı Üniversitesi Elektronik Mühendisliği bölümündeki Tokgöz Lab'ın web sitesi. Laboratuvar, geleceğin (6G) haberleşme sistemleri için enerji verimli milimetre dalga ve alt-terahertz CMOS devreleri, entegre sistemler ve akıllı donanım üzerine çalışıyor.
 
-Canlı site: https://fatihardazengin.github.io/tokgozlab
+Canlı site: https://tokgozlab.com
 
 Site [Astro](https://astro.build) ve Tailwind CSS ile geliştirildi, statik olarak üretiliyor ve arama için [Pagefind](https://pagefind.app) kullanıyor. `main` dalına yapılan her push'ta GitHub Pages'e otomatik olarak deploy ediliyor (bkz. `.github/workflows/pages.yml`) — elle çalıştırılan bir deploy adımı yok.
 
@@ -284,7 +284,7 @@ Değişikliğini nasıl yaptığın önemli değil (GitHub.com veya kendi bilgis
 
 1. GitHub Actions otomatik olarak `npm run build`'i çalıştırır (bu, `citations.bib`'i yeniden içe aktarır, her sayfayı yeniden derler, aramayı ve sitemap'i yeniden oluşturur).
 2. Sonuç GitHub Pages'e yayınlanır.
-3. https://fatihardazengin.github.io/tokgozlab adresindeki canlı site güncellenir — genellikle 1-2 dakika içinde.
+3. https://tokgozlab.com adresindeki canlı site güncellenir — genellikle 1-2 dakika içinde.
 
 Bunun gerçekleştiğini GitHub reposunun **Actions** sekmesinden izleyebilirsin; kırmızı ✗ bir şeylerin ters gittiği anlamına gelir (bkz. [Sorun giderme](#sorun-giderme)), yeşil ✓ ise canlıda olduğu anlamına gelir.
 

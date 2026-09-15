@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fatihardazengin.github.io/tokgozlab/sitemap.xml
+Sitemap: https://tokgozlab.com/sitemap.xml

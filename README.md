@@ -4,7 +4,7 @@
 
 Website for the Tokgöz Lab at Sabancı University, Electronics Engineering. The lab works on energy-efficient millimeter-wave and sub-terahertz CMOS circuits, integrated systems, and intelligent hardware for future (6G) communications.
 
-Live site: https://fatihardazengin.github.io/tokgozlab
+Live site: https://tokgozlab.com
 
 Built with [Astro](https://astro.build) and Tailwind CSS, statically generated, with [Pagefind](https://pagefind.app) for search. Deployed automatically to GitHub Pages on every push to `main` (see `.github/workflows/pages.yml`) — you never run a manual deploy step.
 
@@ -288,7 +288,7 @@ However you made your edit (GitHub.com or your own computer — see [Two ways to
 
 1. GitHub Actions automatically runs `npm run build` (which re-imports `citations.bib`, rebuilds every page, and regenerates search + sitemap).
 2. The result is published to GitHub Pages.
-3. The live site at https://fatihardazengin.github.io/tokgozlab updates — usually within 1–2 minutes.
+3. The live site at https://tokgozlab.com updates — usually within 1–2 minutes.
 
 You can watch this happen under the **Actions** tab of the GitHub repository; a red ✗ means something went wrong (see [Troubleshooting](#troubleshooting)), a green ✓ means it's live.
 

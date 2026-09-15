@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-// Must match `site` + `base` in astro.config.mjs.
-const SITE_URL = 'https://fatihardazengin.github.io/tokgozlab';
+// Must match `site` in astro.config.mjs.
+const SITE_URL = 'https://tokgozlab.com';
 
 const DIST_DIR = path.join(process.cwd(), 'dist');
 const RESEARCH_DIR = path.join(process.cwd(), 'src', 'content', 'research');

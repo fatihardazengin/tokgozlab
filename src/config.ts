@@ -1,16 +1,16 @@
 import heroImage from './assets/tokgoz-lab-hero.png';
 
-// Prefixes an app-root path (e.g. '/research') with Astro's configured `base`
-// (e.g. '/tokgozlab'), so links and public/ assets resolve under GitHub Pages'
-// project subpath. Astro does not do this automatically for literal strings.
+// Prefixes an app-root path (e.g. '/research') with Astro's configured `base`.
+// The site is served from the domain root, so `base` is unset and this is a
+// no-op today — kept so links keep working unchanged if `base` is ever
+// reintroduced (e.g. a preview deploy under a subpath).
 export const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   return path === '/' ? `${base}/` : `${base}${path}`;
 };
 
 export const SITE = {
-  // Set Astro's `site` option when the lab's production domain is chosen.
-  website: '',
+  website: 'https://tokgozlab.com',
   author: 'Korkut Kaan Tokgöz',
   description:
     'Tokgöz Lab at Sabancı University develops energy-efficient mmWave and sub-terahertz CMOS circuits, integrated systems, and intelligent hardware for future communications.',
