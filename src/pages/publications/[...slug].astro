@@ -1,0 +1,161 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowLeft, ArrowUpRight, Code2, FileText, Globe2, Play, Presentation, Video } from 'lucide-react';
+import Layout from '../../layouts/Layout.astro';
+import { SITE, withBase } from '../../config';
+
+export async function getStaticPaths() {
+  const papers = (await getCollection('publications')).filter((entry) => entry.data.type === 'paper');
+  return papers.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { title, authors, year, venue, description, doi, award, links, badges } = entry.data;
+
+const iconMap: Record<string, any> = {
+  pdf: FileText,
+  code: Code2,
+  demo: Play,
+  slides: Presentation,
+  video: Video,
+  website: Globe2,
+};
+const labelMap: Record<string, string> = {
+  pdf: 'Paper',
+  code: 'Code',
+  demo: 'Demo',
+  slides: 'Slides',
+  video: 'Video',
+  website: 'Publisher',
+};
+
+const isLabAuthor = (author: string) => /Korkut Kaan Tokg[oö]z/i.test(author);
+const activeLinks = links ? Object.entries(links).filter(([, url]) => Boolean(url && url !== '#')) : [];
+const doiUrl = doi ? `https://doi.org/${doi}` : undefined;
+
+// --- Academic SEO: Highwire Press / Google Scholar citation meta tags ---
+const citationDate = String(year);
+
+const CONFERENCE_HINTS = /conference|symposium|workshop|proceedings|congress/i;
+const JOURNAL_HINTS = /journal|letters|transactions|magazine|access|review|express/i;
+const isConferenceVenue = CONFERENCE_HINTS.test(venue);
+const isJournalVenue = !isConferenceVenue && JOURNAL_HINTS.test(venue);
+
+// Only ever treat a publication's own PDF link as citation_pdf_url when it's
+// actually hosted on this site — never a DOI landing page or publisher URL.
+const isOwnHostedPdf = (url?: string) => !!url && (url.startsWith('/') || url.includes('tokgozlab.com'));
+const citationPdfUrl = isOwnHostedPdf(links?.pdf)
+  ? links!.pdf!.startsWith('/')
+    ? new URL(withBase(links!.pdf!), Astro.site ?? new URL(Astro.url.origin)).href
+    : links!.pdf
+  : undefined;
+
+// --- ScholarlyArticle JSON-LD ---
+const canonicalHref = new URL(Astro.url.pathname, Astro.site ?? new URL(Astro.url.origin)).href;
+const scholarlyArticleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: title,
+  name: title,
+  author: authors.map((name) => ({ '@type': 'Person', name })),
+  datePublished: citationDate,
+  isPartOf: { '@type': 'Periodical', name: venue },
+  description,
+  identifier: doi,
+  ...(doiUrl ? { sameAs: doiUrl } : {}),
+  url: canonicalHref,
+};
+---
+
+<Layout title={title} description={description ?? `${title} — ${venue}, ${year}. Published by Tokgöz Lab.`}>
+  <Fragment slot="head">
+    <meta name="citation_title" content={title} />
+    {authors.map((author) => <meta name="citation_author" content={author} />)}
+    <meta name="citation_publication_date" content={citationDate} />
+    {isJournalVenue && <meta name="citation_journal_title" content={venue} />}
+    {isConferenceVenue && <meta name="citation_conference_title" content={venue} />}
+    {doi && <meta name="citation_doi" content={doi} />}
+    {citationPdfUrl && <meta name="citation_pdf_url" content={citationPdfUrl} />}
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(scholarlyArticleSchema)} />
+  </Fragment>
+
+  <header class="relative overflow-hidden bg-[#061a2b] text-white">
+    <div class="signal-grid absolute inset-0 opacity-50"></div>
+    <div class="section-shell relative py-12 sm:py-18">
+      <a href={withBase('/publications')} class="inline-flex items-center gap-2 text-sm font-bold text-[#7bdedb] hover:text-white">
+        <ArrowLeft className="h-4 w-4" /> Back to publications
+      </a>
+
+      <div class="mt-10 max-w-3xl">
+        <div class="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#7bdedb]">
+          <span class="rounded-full border border-white/20 px-3 py-1 font-mono">{year}</span>
+          {(badges ?? (award ? [{ text: award, type: 'gold' }] : [])).map((badge) => (
+            <span class="rounded-full bg-[#ffb547]/15 px-3 py-1 text-[#ffb547]">{badge.text}</span>
+          ))}
+        </div>
+        <h1 class="mt-4 text-3xl font-bold leading-[1.1] tracking-[-0.03em] sm:text-5xl">{title}</h1>
+        <p class="mt-4 text-lg font-semibold text-slate-300">{venue}</p>
+
+        <div class="mt-8 flex flex-wrap gap-2">
+          {activeLinks.map(([key, url]) => {
+            const Icon = iconMap[key] || ArrowUpRight;
+            return (
+              <a href={url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/10">
+                <Icon className="h-4 w-4" /> {labelMap[key] ?? key}
+              </a>
+            );
+          })}
+          {doiUrl && !activeLinks.some(([, url]) => url === doiUrl) && (
+            <a href={doiUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/10">
+              DOI <ArrowUpRight className="h-4 w-4" />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <article class="section-shell grid gap-12 py-16 sm:py-24 lg:grid-cols-[1fr_19rem] lg:gap-20">
+    <div class="prose max-w-3xl">
+      {description && (
+        <>
+          <h2>Abstract</h2>
+          <p>{description}</p>
+        </>
+      )}
+    </div>
+    <aside class="h-fit rounded-2xl border border-slate-200 bg-[#f5f8fa] p-6 lg:sticky lg:top-28">
+      <p class="text-xs font-bold uppercase tracking-[0.15em] text-[#007f80]">At a glance</p>
+      <dl class="mt-5 space-y-5 text-sm">
+        <div>
+          <dt class="font-bold text-[#071b26]">Authors</dt>
+          <dd class="mt-1 leading-6 text-slate-600">
+            {authors.map((author, index) => (
+              <>
+                <span class:list={[isLabAuthor(author) && 'font-bold text-[#002776]']}>{author}</span>{index < authors.length - 1 ? ', ' : ''}
+              </>
+            ))}
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-[#071b26]">Venue</dt>
+          <dd class="mt-1 leading-6 text-slate-600">{venue}</dd>
+        </div>
+        <div>
+          <dt class="font-bold text-[#071b26]">Year</dt>
+          <dd class="mt-1 leading-6 text-slate-600">{year}</dd>
+        </div>
+        {doi && (
+          <div>
+            <dt class="font-bold text-[#071b26]">DOI</dt>
+            <dd class="mt-1 leading-6"><a href={doiUrl} target="_blank" rel="noopener noreferrer" class="text-[#006f72] hover:underline">{doi}</a></dd>
+          </div>
+        )}
+      </dl>
+      <a href={SITE.profile.scholarUrl} target="_blank" rel="noopener noreferrer" class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#002776]">Google Scholar <ArrowUpRight className="h-4 w-4" /></a>
+    </aside>
+  </article>
+</Layout>

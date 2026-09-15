@@ -1,6 +1,7 @@
 ---
 import { ArrowUpRight, Code2, FileText, Globe2, Play, Presentation, Video } from 'lucide-react';
 import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../config';
 
 interface Props {
   entry: CollectionEntry<'publications'>;
@@ -8,6 +9,7 @@ interface Props {
 
 const { entry } = Astro.props;
 const { title, authors, year, venue, links, doi, award, badges } = entry.data;
+const detailLink = withBase(`/publications/${entry.id}`);
 
 const iconMap: Record<string, any> = {
   pdf: FileText,
@@ -39,9 +41,7 @@ const doiUrl = doi ? `https://doi.org/${doi}` : undefined;
 
   <div>
     <h3 class="text-lg font-bold leading-snug tracking-[-0.015em] text-[#071b26] sm:text-xl">
-      {doiUrl ? (
-        <a href={doiUrl} target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-[#006f72]">{title}</a>
-      ) : title}
+      <a href={detailLink} class="transition-colors hover:text-[#006f72]">{title}</a>
     </h3>
 
     <p class="mt-3 text-sm leading-6 text-slate-600">

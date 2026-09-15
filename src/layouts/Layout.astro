@@ -117,6 +117,8 @@ const organizationSchema = {
     <meta name="twitter:image" content={ogImage} />
 
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+    <slot name="head" />
   </head>
   <body class="min-h-screen bg-white text-slate-800">
     <Header />
