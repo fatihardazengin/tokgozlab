@@ -36,10 +36,7 @@
 
   <rect x="160" y="160" width="192" height="192" rx="43" fill="#fff"/>
 
-  <g fill="#002776">
-    <rect x="204" y="204" width="104" height="28" rx="4"/>
-    <rect x="240" y="232" width="32" height="76" rx="4"/>
-  </g>
+  <path fill="#002776" d="M212,204 L300,204 A8,8 0 0 1 308,212 L308,232 L272,232 L272,300 A8,8 0 0 1 264,308 L248,308 A8,8 0 0 1 240,300 L240,232 L204,232 L204,212 A8,8 0 0 1 212,204 Z"/>
 
   <g fill="none" stroke="#FFB547" stroke-width="21" stroke-linecap="round">
     <path d="M379,101 a53,53 0 0 1 32,32"/>
