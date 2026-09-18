@@ -1,33 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 600" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
   <title id="title">Tokgöz Lab</title>
-  <desc id="desc">Hexagonal circuit mark with an interlocking T and C monogram, above the Tokgöz Lab wordmark</desc>
+  <desc id="desc">A CMOS chip with a bold T mark, twelve circuit traces, and two wireless signal arcs</desc>
 
-  <g transform="translate(64,10) scale(0.75)">
-    <polygon points="256,85 442.2,192.5 442.2,407.5 256,515 69.8,407.5 69.8,192.5"
-      fill="none" stroke="#002776" stroke-width="20" stroke-linejoin="round"/>
+  <rect width="512" height="512" rx="149" fill="#002776"/>
 
-    <g fill="none" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M256,85 L256,30" stroke="#002776"/>
-      <path d="M256,515 L256,570" stroke="#D62839"/>
-      <path d="M69.8,192.5 L45.05,167.75 L45.05,132.75" stroke="#D62839"/>
-      <path d="M442.2,192.5 L466.95,167.75 L466.95,132.75" stroke="#00A6A6"/>
-      <path d="M69.8,407.5 L45.05,432.25 L45.05,467.25" stroke="#00A6A6"/>
-      <path d="M442.2,407.5 L466.95,432.25 L466.95,467.25" stroke="#002776"/>
-    </g>
-
-    <g>
-      <circle cx="256" cy="30" r="17" fill="#002776"/>
-      <circle cx="256" cy="570" r="17" fill="#D62839"/>
-      <circle cx="45.05" cy="132.75" r="17" fill="#D62839"/>
-      <circle cx="466.95" cy="132.75" r="17" fill="#00A6A6"/>
-      <circle cx="45.05" cy="467.25" r="17" fill="#00A6A6"/>
-      <circle cx="466.95" cy="467.25" r="17" fill="#002776"/>
-    </g>
-
-    <path fill="#002776" d="M130,200 L252,200 A14,14 0 0 1 266,214 L266,250 L219,250 L219,386 A14,14 0 0 1 205,400 L177,400 A14,14 0 0 1 163,386 L163,250 L116,250 L116,214 A14,14 0 0 1 130,200 Z"/>
-
-    <path fill="#00A6A6" d="M382.6,350 A100,100 0 1 1 382.6,250 L335.8,277 A46,46 0 1 0 335.8,323 Z"/>
+  <g stroke="#5DE4DF" stroke-width="21" stroke-linecap="round">
+    <line x1="170" y1="181" x2="117" y2="181"/>
+    <line x1="170" y1="256" x2="117" y2="256"/>
+    <line x1="170" y1="331" x2="117" y2="331"/>
+    <line x1="342" y1="181" x2="395" y2="181"/>
+    <line x1="342" y1="256" x2="395" y2="256"/>
+    <line x1="342" y1="331" x2="395" y2="331"/>
+    <line x1="181" y1="170" x2="181" y2="117"/>
+    <line x1="256" y1="170" x2="256" y2="117"/>
+    <line x1="331" y1="170" x2="331" y2="117"/>
+    <line x1="181" y1="342" x2="181" y2="395"/>
+    <line x1="256" y1="342" x2="256" y2="395"/>
+    <line x1="331" y1="342" x2="331" y2="395"/>
   </g>
 
-  <text x="256" y="535" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="800" font-size="56" letter-spacing="5" fill="#002776">TOKGÖZ LAB</text>
+  <g fill="#5DE4DF">
+    <circle cx="117" cy="181" r="16"/>
+    <circle cx="117" cy="256" r="16"/>
+    <circle cx="117" cy="331" r="16"/>
+    <circle cx="395" cy="181" r="16"/>
+    <circle cx="395" cy="256" r="16"/>
+    <circle cx="395" cy="331" r="16"/>
+    <circle cx="181" cy="117" r="16"/>
+    <circle cx="256" cy="117" r="16"/>
+    <circle cx="331" cy="117" r="16"/>
+    <circle cx="181" cy="395" r="16"/>
+    <circle cx="256" cy="395" r="16"/>
+    <circle cx="331" cy="395" r="16"/>
+  </g>
+
+  <rect x="160" y="160" width="192" height="192" rx="43" fill="#fff"/>
+
+  <path fill="#002776" d="M212,204 L300,204 A8,8 0 0 1 308,212 L308,232 L272,232 L272,300 A8,8 0 0 1 264,308 L248,308 A8,8 0 0 1 240,300 L240,232 L204,232 L204,212 A8,8 0 0 1 212,204 Z"/>
+
+  <g fill="none" stroke="#FFB547" stroke-width="21" stroke-linecap="round">
+    <path d="M379,101 a53,53 0 0 1 32,32"/>
+    <path d="M384,53 a101,101 0 0 1 75,75"/>
+  </g>
 </svg>
