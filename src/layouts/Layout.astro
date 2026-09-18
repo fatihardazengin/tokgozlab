@@ -121,6 +121,29 @@ const organizationSchema = {
 
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 
+    {import.meta.env.PROD && (
+      <Fragment>
+        {/* Google tag (gtag.js) — production builds only; the inline script
+           below also no-ops on localhost/127.0.0.1 in case a prod build is
+           previewed locally. */}
+        <script is:inline>
+          (function () {
+            var host = window.location.hostname;
+            if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]') return;
+            var tag = document.createElement('script');
+            tag.async = true;
+            tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-274PX3MMK0';
+            document.head.appendChild(tag);
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', 'G-274PX3MMK0');
+          })();
+        </script>
+      </Fragment>
+    )}
+
     <slot name="head" />
   </head>
   <body class="min-h-screen">
