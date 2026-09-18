@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 600" role="img" aria-labelledby="title desc">
+  <title id="title">Tokgöz Lab monogram</title>
+  <desc id="desc">An interlocking T and C monogram</desc>
+
+  <path fill="#002776" d="M130,200 L252,200 A14,14 0 0 1 266,214 L266,250 L219,250 L219,386 A14,14 0 0 1 205,400 L177,400 A14,14 0 0 1 163,386 L163,250 L116,250 L116,214 A14,14 0 0 1 130,200 Z"/>
+
+  <path fill="#00A6A6" d="M382.6,350 A100,100 0 1 1 382.6,250 L335.8,277 A46,46 0 1 0 335.8,323 Z"/>
+</svg>
