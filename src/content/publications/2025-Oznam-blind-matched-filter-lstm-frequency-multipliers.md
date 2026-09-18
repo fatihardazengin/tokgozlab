@@ -13,6 +13,6 @@ links:
   video: ""
 doi: "10.1109/PIMRC62392.2025.11275373"
 description: "An LSTM-based blind matched-filter design for communication chains that include frequency multipliers, avoiding explicit channel estimation of the multiplier's nonlinear response."
-featured: false
+featured: true
 ---
 An LSTM-based blind matched-filter design for communication chains that include frequency multipliers, avoiding explicit channel estimation of the multiplier's nonlinear response.

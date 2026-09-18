@@ -13,6 +13,6 @@ links:
   video: ""
 doi: "10.1109/LCOMM.2025.3556767"
 description: "An analytical study of signal-bandwidth scaling through N-fold frequency multipliers for millimeter-wave and sub-terahertz communication chains."
-featured: false
+featured: true
 ---
 An analytical study of signal-bandwidth scaling through N-fold frequency multipliers for millimeter-wave and sub-terahertz communication chains.

@@ -13,6 +13,6 @@ links:
   video: ""
 doi: "10.1109/ISSCC.2018.8310237"
 description: "A 16-QAM CMOS millimeter-wave transceiver demonstrating a 120-Gb/s wireless data rate."
-featured: true
+featured: false
 ---
 A 16-QAM CMOS millimeter-wave transceiver demonstrating a 120-Gb/s wireless data rate.

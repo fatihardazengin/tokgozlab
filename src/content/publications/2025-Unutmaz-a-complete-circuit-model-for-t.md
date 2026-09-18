@@ -13,6 +13,6 @@ links:
   video: ""
 doi: "10.1109/ACCESS.2025.3582843"
 description: "A closed-form circuit model for terahertz spoof surface plasmon polariton waveguides that enables fast synthesis of terahertz integrated circuits."
-featured: false
+featured: true
 ---
 A closed-form circuit model for terahertz spoof surface plasmon polariton waveguides that enables fast synthesis of terahertz integrated circuits.

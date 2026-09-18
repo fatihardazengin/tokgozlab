@@ -13,6 +13,6 @@ links:
   video: ""
 doi: "10.1109/ISCAS51556.2021.9401342"
 description: "An ultra-low-power FPGA decision-tree classifier for cattle behavior monitoring at the edge."
-featured: true
+featured: false
 ---
 An ultra-low-power FPGA decision-tree classifier for cattle behavior monitoring at the edge.

@@ -13,6 +13,6 @@ links:
   video: ""
 doi: "10.1109/TCSI.2026.3709114"
 description: "A channel-aware behavioral power-modeling framework for non-coherent OOK transceivers in wireless network-on-chip systems, identifying frequency-dependent energy-efficient operating points."
-featured: false
+featured: true
 ---
 A channel-aware behavioral power-modeling framework for non-coherent OOK transceivers in wireless network-on-chip systems, identifying frequency-dependent energy-efficient operating points.
